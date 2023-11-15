@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th = "http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <link href="/css/styles.css" rel="stylesheet" />
+    <title>Title</title>
+</head>
+<body>
+  <div th:fragment="nav" >
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <div class="container px-4 px-lg-5">
+              <a class="navbar-brand"
+                 th:href="@{/Ecommerce/}">Ecommerce</a>
+              <button class="navbar-toggler"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#navbarSupportedContent"
+                      aria-controls="navbarSupportedContent"
+                      aria-expanded="false"
+                      aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse"
+                   id="navbarSupportedContent">
+                  <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                  </ul>
+                  <div class="d-flex gap-3">
+                      <a class="btn btn-outline-dark"
+                         th:href="@{/Ecommerce/carrito}">
+                          <i class="bi-cart-fill me-1"></i>
+                          Cart
+                          <span class="badge bg-dark text-white ms-1 rounded-pill" th:if="${session.carrito != null}" th:text="${#lists.size(session.carrito)}"></span>
+                          <span class="badge bg-dark text-white ms-1 rounded-pill" th:unless="${session.carrito != null}">0</span>
+                      </a>
+                      <a th:if="${session.usuario != null && session.usuario.cargoId.rolId == 3}"
+                         href="index.html"
+                         class="btn btn-outline-dark"
+                         type="submit">
+                          <i class="bi bi-bag-check-fill"></i>
+                          Ventas
+                      </a>
+                      <a th:if="${session.usuario == null}"
+                         th:href="@{/login}"
+                         class="btn btn-outline-dark"
+                         type="submit">
+                          <i class="bi bi-person-fill-add"></i>
+                          Inicie
+                          Sesion
+                      </a>
+                      <a th:if="${session.usuario != null && session.usuario.cargoId.rolId != 3}"
+                         th:href="@{/Dashboard/}"
+                         class="btn btn-outline-dark"
+                         type="submit" th:utext=" '<i class=&quot;bi bi-person-badge-fill&quot;></i>  ' + ${session.usuario.cargoId.nombreRol}">
+                      </a>
+                      <a th:if="${session.usuario != null && session.usuario.cargoId.rolId == 3}"
+                         class="btn btn-outline-dark"
+                         type="submit" th:utext=" '<i class=&quot;bi bi-person-badge-fill&quot;></i>  ' + ${session.usuario.nombreUsuario} + ' ' + ${session.usuario.apellidoUsuario}">
+                      </a>
+                      <form th:if="${session.usuario != null && session.usuario.cargoId.rolId == 3}"
+                            th:action="@{/logout}" method="post" onsubmit="return confirm('Estas seguro de cerrar sesion')">
+                          <button
+                                  class="btn btn-outline-dark"
+                                  type="submit">
+                              <i class="bi bi-box-arrow-left"></i>
+                              Cerrar Sesion
+                          </button>
+                      </form>
+                  </div>
+              </div>
+          </div>
+      </nav>
+  </div>
+
+  <div th:fragment="footer">
+      <footer class="py-5 bg-dark">
+          <div class="container">
+              <p class="m-0 text-center text-white">
+                  Copyright
+                  &copy;
+                  Your
+                  Website
+                  2023</p>
+          </div>
+      </footer>
+  </div>
+</body>
+</html>

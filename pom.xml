@@ -111,6 +111,18 @@
                 test
             </scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/io.github.jpenren/thymeleaf-spring-data-dialect -->
+        <dependency>
+            <groupId>io.github.jpenren</groupId>
+            <artifactId>thymeleaf-spring-data-dialect</artifactId>
+            <version>3.3.1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/nz.net.ultraq.thymeleaf/thymeleaf-layout-dialect -->
+        <dependency>
+            <groupId>nz.net.ultraq.thymeleaf</groupId>
+            <artifactId>thymeleaf-layout-dialect</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th = "http://www.thymeleaf.org" >
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <title>Dashboard - SB Admin</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico" />
+        <link href="https://cdn.datatables.net/v/bs5/dt-1.13.6/datatables.min.css" rel="stylesheet">
+        <link href="/css/styles.css" rel="stylesheet" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        </style>
+    </head>
+    <body class="sb-nav-fixed">
+
+        <div th:include="Dashboard/headerTemplate.html::header"></div>
+
+        <div id="layoutSidenav">
+
+            <div th:include="Dashboard/headerTemplate.html::navegation"></div>
+
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid px-4">
+                        <h1 class="mt-4">Categoria</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item"><a href="Dashboard.html">Dashboard</a></li>
+                            <li class="breadcrumb-item active">Mantenimiento</li>
+                            <li class="breadcrumb-item active">Categoria</li>
+                        </ol>
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-table me-1"></i>
+                                DataTable Example
+                            </div>
+                            <div class="card-body">
+                                <table id="datatablesSimple" class="table table-bordered">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Categoria</th>
+                                            <th> </th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot class="table-light">
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Categoria</th>
+                                            <th> </th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                        <tr th:each="categoria: ${listadoCategoria}">
+                                            <th th:text="${categoria.categoriaId}"></th>
+                                            <td th:text="${categoria.nombreCategoria}"></td>
+                                            <td class="text-center col-1">
+                                                <a class="btn" th:attr="onclick=|abrirModal('${categoria.categoriaId}')|" style="background-color: #e9ecef; border: 1px solid #ced4da;">
+                                                    <i class="fas fa-pen text-secondary"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+
+                <!-- Modal -->
+                <div class="modal fade" id="modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <form id="form" class="needs-validation" th:action="@{/Dashboard/Categoria}" method="post" th:object="${categoria}" novalidate>
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <input type="hidden" id="categoriaId" name="categoriaId" readonly>
+                                    <div class="mb-3">
+                                        <label for="nombreCategoria" class="form-label">Nombre</label>
+                                        <input type="text" class="form-control" id="nombreCategoria" name="nombreCategoria" placeholder="Ingrese el nombre de la categoria" required>
+                                        <div class="invalid-feedback">
+                                            Porfavor debe ingresar el nombre de la categoria
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                    <button type="submit" class="btn btn-primary">Guardar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div th:include="Dashboard/headerTemplate.html::footer"></div>
+
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="/js/scripts.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+        <script src="/jquery/jquery-3.3.1.min.js"></script>
+        <script src="https://cdn.datatables.net/v/bs5/dt-1.13.6/datatables.min.js"></script>
+        <script src="/js/datatables-simple-demo.js"></script>
+        <script src="/scripts/categoria.js"></script>
+        <script src="/scripts/validationForm.js"></script>
+    </body>
+</html>
