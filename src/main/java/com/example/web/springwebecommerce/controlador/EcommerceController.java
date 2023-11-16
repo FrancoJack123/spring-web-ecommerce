@@ -177,9 +177,8 @@ public class EcommerceController {
         List<DetallePedido> carrito = this.obtenerCarrito(session);
         Pedido pedido = new Pedido();
 
-        Usuario usuario = new Usuario();
-        usuario.setUsuarioId(2L);
-        pedido.setUsuarioId(usuario);
+        Usuario cliente = (Usuario) session.getAttribute("usuario");
+        pedido.setUsuarioId(cliente);
 
         double monto = carrito.stream().mapToDouble(DetallePedido::getPrecioVentaDetalle).sum();
         pedido.setMontoPedido(monto);
@@ -194,5 +193,22 @@ public class EcommerceController {
         redirectAttrs.addFlashAttribute("mensaje", "Su compra ha sido exitosa");
 
         return "redirect:/Ecommerce/";
+    }
+
+    @GetMapping("/detalleVenta")
+    public String DetalleVenta(
+        Model model,
+        HttpSession session,
+        @RequestParam(name = "page", defaultValue = "0") int page,
+        @RequestParam(name = "size", defaultValue = "3") int size
+    ){
+        Usuario cliente = (Usuario) session.getAttribute("usuario");
+        PageRequest pageable = PageRequest.of(page, size);
+        Page<Pedido> list = pedidoServico.ListarPedidosClienteId(cliente.getUsuarioId(), pageable);
+
+
+
+        model.addAttribute("ListaPedidos", list);
+        return "Ecommerce/DetalleCompra";
     }
 }
