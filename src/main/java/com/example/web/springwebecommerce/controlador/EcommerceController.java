@@ -6,6 +6,8 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -21,18 +23,21 @@ public class EcommerceController {
     private final MarcaServicio marcaServicio;
     private final CategoriaServicio categoriaServicio;
     private final PedidoServico pedidoServico;
+    private final DetallePedidoServicio detallePedidoServicio;
 
     @Autowired
     public EcommerceController(
             ProductoServicio productoServicio,
             MarcaServicio marcaServicio,
             CategoriaServicio categoriaServicio,
-            PedidoServico pedidoServico
+            PedidoServico pedidoServico,
+            DetallePedidoServicio detallePedidoServicio
     ){
         this.productoServicio = productoServicio;
         this.marcaServicio = marcaServicio;
         this.categoriaServicio = categoriaServicio;
         this.pedidoServico = pedidoServico;
+        this.detallePedidoServicio = detallePedidoServicio;
     }
 
     @GetMapping("/")
@@ -210,5 +215,12 @@ public class EcommerceController {
 
         model.addAttribute("ListaPedidos", list);
         return "Ecommerce/DetalleCompra";
+    }
+
+    @GetMapping("/listaDetallePedido/{pedidoID}")
+    public ResponseEntity<List<DetallePedido>> ListarPedidosUsuarioId(@PathVariable Long pedidoID){
+        List<DetallePedido> list = detallePedidoServicio.ListaDetallePedidoId(pedidoID);
+        System.out.println("list.size() = " + list.size());
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
 }

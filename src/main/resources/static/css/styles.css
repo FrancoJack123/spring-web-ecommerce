@@ -2826,7 +2826,7 @@ textarea.form-control-lg {
   width: 100%;
   margin-top: 0.25rem;
   font-size: 0.875em;
-  color: #198754;
+  /*color: #198754;*/
 }
 
 .valid-tooltip {
@@ -2851,16 +2851,16 @@ textarea.form-control-lg {
 }
 
 .was-validated .form-control:valid, .was-validated .dataTable-input:valid, .form-control.is-valid, .is-valid.dataTable-input {
-  border-color: #198754;
-  padding-right: calc(1.5em + 0.75rem);
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23198754' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
+  /*border-color: #198754;*/
+  /*padding-right: calc(1.5em + 0.75rem);*/
+  /*background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23198754' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");*/
   background-repeat: no-repeat;
   background-position: right calc(0.375em + 0.1875rem) center;
   background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
 }
 .was-validated .form-control:valid:focus, .was-validated .dataTable-input:valid:focus, .form-control.is-valid:focus, .is-valid.dataTable-input:focus {
-  border-color: #198754;
-  box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.25);
+  /*border-color: #198754;*/
+  /*box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.25);*/
 }
 
 .was-validated textarea.form-control:valid, .was-validated textarea.dataTable-input:valid, textarea.form-control.is-valid, textarea.is-valid.dataTable-input {
@@ -2869,30 +2869,30 @@ textarea.form-control-lg {
 }
 
 .was-validated .form-select:valid, .was-validated .dataTable-selector:valid, .form-select.is-valid, .is-valid.dataTable-selector {
-  border-color: #198754;
+  /*border-color: #198754;*/
 }
 .was-validated .form-select:valid:not([multiple]):not([size]), .was-validated .dataTable-selector:valid:not([multiple]):not([size]), .was-validated .form-select:valid:not([multiple])[size="1"], .was-validated .dataTable-selector:valid:not([multiple])[size="1"], .form-select.is-valid:not([multiple]):not([size]), .is-valid.dataTable-selector:not([multiple]):not([size]), .form-select.is-valid:not([multiple])[size="1"], .is-valid.dataTable-selector:not([multiple])[size="1"] {
   padding-right: 4.125rem;
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e"), url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23198754' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
+  /*background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e"), url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23198754' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");*/
   background-position: right 0.75rem center, center right 2.25rem;
   background-size: 16px 12px, calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
 }
 .was-validated .form-select:valid:focus, .was-validated .dataTable-selector:valid:focus, .form-select.is-valid:focus, .is-valid.dataTable-selector:focus {
-  border-color: #198754;
-  box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.25);
+  /*border-color: #198754;
+  box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.25);*/
 }
 
 .was-validated .form-check-input:valid, .form-check-input.is-valid {
-  border-color: #198754;
+  /*border-color: #198754;*/
 }
 .was-validated .form-check-input:valid:checked, .form-check-input.is-valid:checked {
-  background-color: #198754;
+  /*background-color: #198754;*/
 }
 .was-validated .form-check-input:valid:focus, .form-check-input.is-valid:focus {
-  box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.25);
+  /*box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.25);*/
 }
 .was-validated .form-check-input:valid ~ .form-check-label, .form-check-input.is-valid ~ .form-check-label {
-  color: #198754;
+  /*color: #198754;*/
 }
 
 .form-check-inline .form-check-input ~ .valid-feedback {

@@ -1,5 +1,6 @@
 package com.example.web.springwebecommerce.entidad;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,6 +27,7 @@ public class DetallePedido {
 
     @ManyToOne
     @JoinColumn(name = "pedidoId")
+    @JsonBackReference
     Pedido pedidoId;
 
     public DetallePedido(Integer cantidadDetalle, Double precioVentaDetalle, Producto productoId) {

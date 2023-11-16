@@ -1,0 +1,22 @@
+package com.example.web.springwebecommerce.servicios;
+
+import com.example.web.springwebecommerce.entidad.DetallePedido;
+import com.example.web.springwebecommerce.repositorio.DetallePedidoRepositorio;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class DetallePedidoServicio {
+    private final DetallePedidoRepositorio pedidoRepositorio;
+
+    @Autowired
+    public DetallePedidoServicio(DetallePedidoRepositorio detallePedidoRepositorio){
+        this.pedidoRepositorio = detallePedidoRepositorio;
+    }
+
+    public List<DetallePedido> ListaDetallePedidoId(Long pedidoId){
+        return pedidoRepositorio.ListaDetallePedidoId(pedidoId);
+    }
+}
