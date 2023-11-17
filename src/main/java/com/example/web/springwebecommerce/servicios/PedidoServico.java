@@ -16,6 +16,10 @@ public class PedidoServico {
         this.pedidoRepositorio = pedidoRepositorio;
     }
 
+    public Pedido BuscarPedido(Long pedidoId){
+        return pedidoRepositorio.findById(pedidoId).get();
+    }
+
     public void AgregarPedido(Pedido pedido){
         pedidoRepositorio.save(pedido);
     }

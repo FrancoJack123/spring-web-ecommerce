@@ -43,7 +43,13 @@
                 <div class="d-flex gap-2 justify-content-center align-items-center" style="width: auto;">
                     <div class="me-2" th:utext="'<strong>$ ' + ${pedido.montoPedido} +' USD</strong>'"></div>
                     <div><a th:attr="onclick=|abrirModal('${pedido.pedidoId}')|" class="btn btn-outline-success">Ver Detalle</a></div>
-                    <div><a href="" class="btn btn-outline-danger"><i class="bi bi-file-earmark-pdf-fill"></i></a>
+                    <div>
+                        <form th:action="@{/report/web/app/detalleVenta}" method="post" target="_blank">
+                            <input type="hidden" name="pedidoId" th:value="${pedido.pedidoId}">
+                            <button type="submit" class="btn btn-outline-danger">
+                                <i class="bi bi-file-earmark-pdf-fill"></i>
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
