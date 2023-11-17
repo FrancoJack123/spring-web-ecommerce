@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class LoginController {
@@ -22,7 +23,11 @@ public class LoginController {
     }
 
     @GetMapping("/login")
-    public String Login(Model model){
+    public String Login(
+            @ModelAttribute("mensaje") String mensaje,
+            Model model
+    ){
+        model.addAttribute("mensaje", mensaje);
         return "Login/login";
     }
 
@@ -31,11 +36,13 @@ public class LoginController {
             Model model,
             @RequestParam String correo,
             @RequestParam String password,
+            RedirectAttributes redirectAttrs,
             HttpSession session
     ){
         Usuario usuario = usuarioServicio.LoginUsuario(correo, password);
         if (usuario == null){
-            return "Login/login";
+            redirectAttrs.addFlashAttribute("mensaje","Credenciales incorrectas");
+            return "redirect:/login";
         }
 
         session.setAttribute("usuario", usuario);

@@ -46,13 +46,14 @@ public class EcommerceController {
             @RequestParam(name = "marcaId", required = false, defaultValue = "0")Long marcaId,
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "6") int size,
+            @ModelAttribute("mensaje") String mensaje,
             Model model
     ){
-
         PageRequest pageable = PageRequest.of(page, size);
         Page<Producto> Listado = productoServicio.ListarProductoCategoriaMarca(marcaId,categoriaId,pageable);
         List<Marca> marcas = marcaServicio.ListarMarca();
         List<Categoria> categorias = categoriaServicio.ListarCategoria();
+
         //Metodo para la paginacion
         int cantLis = (int) Listado.getTotalElements();
         
@@ -68,6 +69,9 @@ public class EcommerceController {
         model.addAttribute("marcas",marcas);
         model.addAttribute("categorias",categorias);
         model.addAttribute("ProducMarcaCategoria", Listado);
+
+        model.addAttribute("mensaje", mensaje);
+
         return "Ecommerce/ListProducts";
     }
 
@@ -171,14 +175,24 @@ public class EcommerceController {
     }
 
     @GetMapping("/carrito")
-    public String VerCarrito(Model model, HttpSession session){
+    public String VerCarrito(
+            Model model,
+            @ModelAttribute("mensaje") String mensaje,
+            HttpSession session
+    ){
         List<DetallePedido> carrito = this.obtenerCarrito(session);
         model.addAttribute("carrito", carrito);
+
+        model.addAttribute("mensaje", mensaje);
+
         return "Ecommerce/CarritoCompras";
     }
 
     @PostMapping("/comprar")
-    public String ComprarPedido(RedirectAttributes redirectAttrs, HttpSession session){
+    public String ComprarPedido(
+            RedirectAttributes redirectAttrs,
+            HttpSession session
+    ){
         List<DetallePedido> carrito = this.obtenerCarrito(session);
         Pedido pedido = new Pedido();
 
@@ -211,8 +225,6 @@ public class EcommerceController {
         PageRequest pageable = PageRequest.of(page, size);
         Page<Pedido> list = pedidoServico.ListarPedidosClienteId(cliente.getUsuarioId(), pageable);
 
-
-
         model.addAttribute("ListaPedidos", list);
         return "Ecommerce/DetalleCompra";
     }
@@ -220,7 +232,6 @@ public class EcommerceController {
     @GetMapping("/listaDetallePedido/{pedidoID}")
     public ResponseEntity<List<DetallePedido>> ListarPedidosUsuarioId(@PathVariable Long pedidoID){
         List<DetallePedido> list = detallePedidoServicio.ListaDetallePedidoId(pedidoID);
-        System.out.println("list.size() = " + list.size());
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 }

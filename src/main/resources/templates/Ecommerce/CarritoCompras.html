@@ -92,7 +92,7 @@
         </div>
         <br>
 
-        <div th:if="${(mensaje != null && !mensaje.isEmpty()) || mensaje != null}" class="toast fade show position-fixed bottom-0 end-0 m-4" role="alert" aria-live="assertive" aria-atomic="true">
+        <div th:if="${!mensaje.isEmpty()}" class="toast fade show position-fixed bottom-0 end-0 m-4" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header">
                 <svg class="bd-placeholder-img rounded me-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="red"></rect></svg>
                 <strong class="me-auto">Alerta</strong>

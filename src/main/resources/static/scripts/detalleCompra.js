@@ -4,7 +4,6 @@ function abrirModal(codigo){
         type:"GET",
         dataType:"json",
         success:function (data){
-            console.log(data)
             const tablaBody = $('#table');
             tablaBody.empty();
             $.each(data, function(index, item) {
