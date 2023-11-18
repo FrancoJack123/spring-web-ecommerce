@@ -36,7 +36,6 @@ public class ReportController {
         List<ReportVenta> reportVentas = new ArrayList<>();
         for (int i = 0; i < pedido.getDetalle().size(); i++){
             ReportVenta reportVenta = new ReportVenta(
-                    pedido.getDetalle().get(i).getProductoId().getProductoId(),
                     pedido.getDetalle().get(i).getProductoId().getNombreProducto(),
                     pedido.getDetalle().get(i).getProductoId().getPrecioProducto(),
                     pedido.getDetalle().get(i).getCantidadDetalle(),
@@ -45,12 +44,13 @@ public class ReportController {
             reportVentas.add(reportVenta);
         }
 
-        JasperReport jasperReport = (JasperReport) JRLoader.loadObjectFromFile("src/main/resources/static/jasper/ReportProductos.jasper");
+        JasperReport jasperReport = (JasperReport) JRLoader.loadObjectFromFile("src/main/resources/static/jasper/ReporteVenta.jasper");
         JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource((Collection<?>) reportVentas);
 
         Map<String, Object> parameters = new HashMap<String, Object>();
-        parameters.put("ds", ds);
-        parameters.put("codCompra", pedido.getPedidoId());
+        parameters.put("codigopedido", pedidoId + 1000000);
+        parameters.put("fechaVenta", pedido.getFechaIngresoPedido());
+        parameters.put("venta", ds);
 
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JREmptyDataSource());
 

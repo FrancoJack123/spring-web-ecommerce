@@ -13,16 +13,16 @@ public class ReportVenta {
     private Double monto;
     private Double desc;
 
-    public ReportVenta(Long codigo, String nombre, Double precio, Integer cantidad, Double desc) {
-        this.codigo = codigo;
+    public ReportVenta(String nombre, Double precio, Integer cantidad, Double desc) {
         this.nombre = nombre;
         this.precio = precio;
         this.cantidad = cantidad;
         if (desc == null){
+            this.desc = 0.0;
             this.monto = precio * cantidad;
         }else {
+            this.desc = desc;
             this.monto = ((precio - (precio * (desc / 100))) * cantidad);
         }
-        this.desc = desc;
     }
 }

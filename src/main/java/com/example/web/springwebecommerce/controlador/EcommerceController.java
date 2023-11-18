@@ -225,6 +225,16 @@ public class EcommerceController {
         PageRequest pageable = PageRequest.of(page, size);
         Page<Pedido> list = pedidoServico.ListarPedidosClienteId(cliente.getUsuarioId(), pageable);
 
+        //Metodo para la paginacion
+        int cantLis = (int) list.getTotalElements();
+        int cantPag = list.getTotalPages();
+
+        model.addAttribute("cantPag", cantPag);
+        model.addAttribute("cantLis", cantLis);
+        model.addAttribute("page", page);
+        model.addAttribute("size", size);
+
+
         model.addAttribute("ListaPedidos", list);
         return "Ecommerce/DetalleCompra";
     }
