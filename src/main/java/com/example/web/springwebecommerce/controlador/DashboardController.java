@@ -2,6 +2,8 @@ package com.example.web.springwebecommerce.controlador;
 
 import com.example.web.springwebecommerce.entidad.*;
 import com.example.web.springwebecommerce.servicios.*;
+import com.example.web.springwebecommerce.utilidad.login.LoginServicio;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -30,14 +32,16 @@ public class DashboardController {
     private final MarcaServicio marcaServicio;
     private final CategoriaServicio categoriaServicio;
     private final ProductoServicio productoServicio;
+    private final LoginServicio loginServicio;
 
     @Autowired
-    public DashboardController(UsuarioServicio u, RolServicio r, MarcaServicio m, CategoriaServicio c, ProductoServicio p){
+    public DashboardController(UsuarioServicio u, RolServicio r, MarcaServicio m, CategoriaServicio c, ProductoServicio p, LoginServicio l){
         this.usuarioServicio = u;
         this.rolServicio = r;
         this.marcaServicio = m;
         this.categoriaServicio = c;
         this.productoServicio = p;
+        this.loginServicio = l;
     }
 
     @GetMapping("/")
@@ -68,7 +72,15 @@ public class DashboardController {
     }
 
     @GetMapping("/Usuarios")
-    public String Usuarios(Model model){
+    public String Usuarios(Model model, HttpSession session){
+
+        if ((String) session.getAttribute("mensaje") != null) {
+            model.addAttribute("mensaje", (String) session.getAttribute("mensaje"));
+            model.addAttribute("clase", (String) session.getAttribute("clase"));
+            session.removeAttribute("mensaje");
+            session.removeAttribute("clase");
+        }
+
         Usuario usuario = new Usuario();
         List<Rol> listarRoles = rolServicio.ListarRoles();
         List<Usuario> list = usuarioServicio.ListarUsuarios();
@@ -79,8 +91,29 @@ public class DashboardController {
     }
 
     @PostMapping("/Usuarios")
-    public String Usuarios(@ModelAttribute Usuario usuario){
+    public String Usuarios(@ModelAttribute Usuario usuario, HttpSession session){
+
+        if (usuario.getUsuarioId() == 0){
+            boolean confirmacorreo = usuarioServicio.correoExitente(usuario.getCorreoUsuario());
+
+            if (confirmacorreo){
+                session.setAttribute("mensaje","El correo " + usuario.getCorreoUsuario().toUpperCase() + " ya fue registrado");
+                session.setAttribute("clase", "danger");
+                return "redirect:/Dashboard/Usuarios";
+            }
+        }
+
+        usuario.setConfirmar(true);
+        usuario.setRestablecer(false);
         usuario.setEstadoUsuario(true);
+
+        if (usuario.getPasswordUsuario().isBlank() || usuario.getPasswordUsuario() == null){
+            Usuario usuario1 = usuarioServicio.BuscarUsuario(usuario.getUsuarioId());
+            usuario.setPasswordUsuario(usuario1.getPasswordUsuario());
+        }else{
+            usuario.setPasswordUsuario(loginServicio.codificarPassword(usuario.getPasswordUsuario()));
+        }
+
         usuarioServicio.AgregarUsuario(usuario);
         return "redirect:/Dashboard/Usuarios";
     }
@@ -88,6 +121,7 @@ public class DashboardController {
     @GetMapping("/Usuarios/{usuarioId}")
     public ResponseEntity<Usuario> BuscarUsuario(@PathVariable Long usuarioId){
         Usuario usuario = usuarioServicio.BuscarUsuario(usuarioId);
+        usuario.setPasswordUsuario("");
         return new ResponseEntity<>(usuario, HttpStatus.OK);
     }
 

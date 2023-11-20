@@ -53,12 +53,16 @@
                                             <label >Contraseña</label>
                                         </div>
                                         <div class="d-flex justify-content-center flex-column">
-                                            <button class="btn text-white btn-lg btn-block fs-6 fw-semibold" style="background-color: #222629;" type="submit">REGISTRARSE</button>
+                                            <button class="btn text-white btn-lg btn-block fs-6 fw-semibold" style="background-color: #222629;" type="submit">Registrarse</button>
                                         </div>
                                         <div class="mt-3">
                                             <span>¿Ya tenias Cuenta? <a th:href="@{/login}"> Inicie Sesion</a></span>
                                         </div>
                                     </form>
+                                </div>
+                                <div th:if="${mensaje != null && !mensaje.isEmpty()}" th:class="'alert alert-' + ${clase}  + ' alert-dismissible fade show text-center'" role="alert">
+                                    <strong th:text="${mensaje} + ' !!!'"></strong>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                 </div>
                             </div>
                         </div>

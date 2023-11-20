@@ -17,8 +17,8 @@ public class UsuarioServicio {
         this.userRepositorio = userRepositorio;
     }
 
-    public Usuario LoginUsuario(String correo, String contrasenia){
-        return userRepositorio.UsuarioLogin(correo, contrasenia);
+    public Usuario LoginUsuario(String correo){
+        return userRepositorio.UsuarioLogin(correo);
     }
 
     public List<Usuario> ListarUsuarios(){
@@ -44,6 +44,32 @@ public class UsuarioServicio {
     public Usuario BuscarUsuario(Long usuarioId){
         Optional<Usuario> usuario = userRepositorio.findById(usuarioId);
         return usuario.get();
+    }
+
+    public boolean ConfirmarUsuario(String token){
+        int filas = userRepositorio.confirmarUsuario(token);
+        boolean confirmar = (filas > 0) ? true : false;
+        return confirmar;
+    }
+
+    public boolean SolicitarContrasenia(String correo){
+        int filas = userRepositorio.SolicitarContrasenia(correo);
+        boolean confirmar = (filas > 0) ? true : false;
+        return confirmar;
+    }
+
+    public boolean RestablecerContrasenia(String contrasenia, String token){
+        int filas = userRepositorio.RestablecerContrasenia(contrasenia, token);
+        boolean confirmar = (filas > 0) ? true : false;
+        return confirmar;
+    }
+
+    public void GuardarToken(String token, Long usuarioId){
+        userRepositorio.GuardarToken(usuarioId, token);
+    }
+
+    public boolean correoExitente(String correo){
+        return userRepositorio.existsByCorreoUsuario(correo.toUpperCase());
     }
 
 }

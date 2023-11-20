@@ -9,6 +9,7 @@ public class Configuration implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new SessionInterceptor()).addPathPatterns("/**")
-                .excludePathPatterns("/login", "/css/**", "/js/**","/assets/**","/Register","/Ecommerce/**");;
+                .excludePathPatterns("/login", "/css/**", "/js/**","/assets/**","/Register","/Ecommerce/**","/confirmar/**","/solicitar","/restablecer/**","/restablecer");;
     }
 }
+

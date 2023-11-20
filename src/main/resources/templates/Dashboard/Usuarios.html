@@ -31,6 +31,12 @@
                             <li class="breadcrumb-item active">Mantenimiento</li>
                             <li class="breadcrumb-item active">Usuarios</li>
                         </ol>
+
+                        <div th:if="${mensaje != null && !mensaje.isEmpty()}" th:class="'alert alert-' + ${clase}  + ' alert-dismissible fade show text-center'" role="alert">
+                            <strong th:text="${mensaje} + ' !!!'"></strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
@@ -149,7 +155,7 @@
                                     </div>
                                     <div class="mb-3">
                                         <label for="passwordUsuario" class="form-label">Password</label>
-                                        <input id="passwordUsuario" name="passwordUsuario" type="text" class="form-control" placeholder="Ingrese el password del Usuario" required>
+                                        <input id="passwordUsuario" name="passwordUsuario" type="password" class="form-control" placeholder="Ingrese el password del Usuario" required>
                                         <div class="invalid-feedback">
                                             Porfavor debe ingresar un password de Usuario
                                         </div>

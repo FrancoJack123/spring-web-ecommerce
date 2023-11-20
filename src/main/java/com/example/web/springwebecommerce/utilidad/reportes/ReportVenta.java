@@ -1,4 +1,4 @@
-package com.example.web.springwebecommerce.controlador.report;
+package com.example.web.springwebecommerce.utilidad.reportes;
 
 import lombok.Getter;
 import lombok.Setter;

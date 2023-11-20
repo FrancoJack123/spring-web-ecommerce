@@ -24,9 +24,22 @@ public class Usuario {
     private String apellidoUsuario;
     private String dniUsuario;
     private String telefonoUsuario;
+
+    @Column(unique = true)
     private String correoUsuario;
+
     private String passwordUsuario;
     private Boolean estadoUsuario;
+
+    @Column(nullable = true)
+    private Boolean restablecer;
+
+    @Column(nullable = true)
+    private Boolean confirmar;
+
+    @Column(nullable = true)
+    private String token;
+
 
     @Temporal(TemporalType.DATE)
     @CreationTimestamp

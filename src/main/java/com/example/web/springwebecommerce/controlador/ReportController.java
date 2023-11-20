@@ -1,17 +1,15 @@
 package com.example.web.springwebecommerce.controlador;
 
-import com.example.web.springwebecommerce.controlador.report.ReportVenta;
+import com.example.web.springwebecommerce.utilidad.reportes.ReportVenta;
 import com.example.web.springwebecommerce.entidad.Pedido;
 import com.example.web.springwebecommerce.servicios.PedidoServico;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import net.sf.jasperreports.engine.*;
-import net.sf.jasperreports.engine.data.JRBeanArrayDataSource;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.util.JRLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;

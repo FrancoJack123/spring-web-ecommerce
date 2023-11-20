@@ -2,6 +2,8 @@ package com.example.web.springwebecommerce.controlador;
 
 import com.example.web.springwebecommerce.entidad.*;
 import com.example.web.springwebecommerce.servicios.*;
+import com.example.web.springwebecommerce.utilidad.correo.modelo.Correo;
+import com.example.web.springwebecommerce.utilidad.correo.servicio.CorreoServicio;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -46,7 +48,6 @@ public class EcommerceController {
             @RequestParam(name = "marcaId", required = false, defaultValue = "0")Long marcaId,
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "6") int size,
-            @ModelAttribute("mensaje") String mensaje,
             Model model
     ){
         PageRequest pageable = PageRequest.of(page, size);
@@ -69,8 +70,6 @@ public class EcommerceController {
         model.addAttribute("marcas",marcas);
         model.addAttribute("categorias",categorias);
         model.addAttribute("ProducMarcaCategoria", Listado);
-
-        model.addAttribute("mensaje", mensaje);
 
         return "Ecommerce/ListProducts";
     }
@@ -111,7 +110,6 @@ public class EcommerceController {
     public String GuardarProducto(
             @RequestParam(name = "productoId", defaultValue = "0") Long productoId,
             @RequestParam(name = "cantidad", defaultValue = "1") Integer cantidad,
-            RedirectAttributes redirectAttrs,
             HttpSession session
     ){
 
@@ -120,12 +118,10 @@ public class EcommerceController {
 
 
         if ((producto == null)){
-            redirectAttrs.addFlashAttribute("mensaje", "El producto no fue encontrado");
             return "redirect:/Ecommerce/";
         }
 
         if (producto.getCantidadProducto() <= 0){
-            redirectAttrs.addFlashAttribute("mensaje", "Lo siento el producto no cuenta con stock");
             return "redirect:/Ecommerce/";
         }
 
@@ -141,7 +137,6 @@ public class EcommerceController {
                     car.setPrecioVentaDetalle(car.getPrecioVentaDetalle() + (precioDetalleSinCantidad * cantidad));
                     car.setCantidadDetalle(car.getCantidadDetalle() + cantidad);
                     this.guardarCarrito(carrito, session);
-                    redirectAttrs.addFlashAttribute("mensaje", "La cantidad fue actualizada correctamente");
                     return "redirect:/Ecommerce/";
                 }
             }
@@ -150,7 +145,6 @@ public class EcommerceController {
         carrito.add(new DetallePedido(cantidad, (precioDetalleSinCantidad * cantidad), producto));
 
         this.guardarCarrito(carrito, session);
-        redirectAttrs.addFlashAttribute("mensaje", "El producto fue agregado correctamente");
 
         return "redirect:/Ecommerce/";
     }
@@ -158,18 +152,11 @@ public class EcommerceController {
     @PostMapping("/eliminarProducto")
     public String ElimnarProductoCarrito(
             @RequestParam(name = "productoId", defaultValue = "0")Long productoId,
-            HttpSession session,
-            RedirectAttributes redirectAttrs
+            HttpSession session
     ){
         List<DetallePedido> carrito = this.obtenerCarrito(session);
 
         boolean eliminado = carrito.removeIf(detallePedido -> detallePedido.getProductoId().getProductoId().equals(productoId));
-
-        if (eliminado) {
-            redirectAttrs.addFlashAttribute("mensaje", "El producto ha sido eliminado");
-        } else {
-            redirectAttrs.addFlashAttribute("mensaje", "El producto no se encontraba en el carrito");
-        }
 
         return "redirect:/Ecommerce/carrito";
     }
@@ -190,7 +177,6 @@ public class EcommerceController {
 
     @PostMapping("/comprar")
     public String ComprarPedido(
-            RedirectAttributes redirectAttrs,
             HttpSession session
     ){
         List<DetallePedido> carrito = this.obtenerCarrito(session);
@@ -208,8 +194,6 @@ public class EcommerceController {
         pedidoServico.AgregarPedido(pedido);
 
         carrito.clear();
-
-        redirectAttrs.addFlashAttribute("mensaje", "Su compra ha sido exitosa");
 
         return "redirect:/Ecommerce/";
     }

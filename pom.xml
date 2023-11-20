@@ -55,6 +55,7 @@
                 spring-boot-starter-thymeleaf
             </artifactId>
         </dependency>
+
         <dependency>
             <groupId>
                 org.springframework.boot
@@ -130,6 +131,23 @@
             <version>6.20.6</version>
         </dependency>
 
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-crypto</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.12.3</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -161,5 +179,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

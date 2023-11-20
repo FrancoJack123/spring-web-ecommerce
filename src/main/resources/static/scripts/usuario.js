@@ -13,7 +13,7 @@ function abrirModal(codigo){
                 $('#telefonoUsuario').val(data.telefonoUsuario)
                 $('#correoUsuario').val(data.correoUsuario)
                 $('#cargoId').val(data.cargoId.rolId)
-                $('#passwordUsuario').val(data.passwordUsuario)
+                $('#passwordUsuario').val(data.passwordUsuario).removeAttr("required")
             }
         })
         $('#modal').modal('show')
@@ -31,5 +31,5 @@ function Limpieza(){
     $('#dniUsuario').val("")
     $('#telefonoUsuario').val("")
     $('#correoUsuario').val("")
-    $('#passwordUsuario').val("")
+    $('#passwordUsuario').val("").attr("required",true)
 }
