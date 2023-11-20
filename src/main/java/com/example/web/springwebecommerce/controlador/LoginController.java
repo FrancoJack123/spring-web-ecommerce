@@ -126,7 +126,7 @@ public class LoginController {
         usuario.setCorreoUsuario(usuario.getCorreoUsuario().toUpperCase());
         usuarioServicio.AgregarUsuario(usuario);
 
-        String url = "http://localhost:8080";
+        String url = "https://spring-web-ecommerce-4108af4f0588.herokuapp.com";
         url += "/confirmar/" + usuario.getToken();
 
         Correo correo = new Correo(usuario.getCorreoUsuario(), "Correo confirmacion", url);
@@ -196,7 +196,7 @@ public class LoginController {
 
         if (respuesta){
             usuarioServicio.GuardarToken(loginServicio.generarToken(usuario.getNombreUsuario()), usuario.getUsuarioId());
-            String url = "http://localhost:8080";
+            String url = "https://spring-web-ecommerce-4108af4f0588.herokuapp.com";
             url += "/restablecer/" + loginServicio.generarToken(usuario.getNombreUsuario());
             Correo structurecorreo = new Correo(usuario.getCorreoUsuario(), "Restablecer cuenta", url);
             correoServicio.enviarEmail(structurecorreo);
