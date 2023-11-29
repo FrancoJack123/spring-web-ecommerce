@@ -8,6 +8,7 @@ import com.example.web.springwebecommerce.utilidad.correo.servicio.CorreoServici
 import com.example.web.springwebecommerce.utilidad.login.LoginServicio;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class LoginController {
+
+    @Value("${spring.localhost.direccion}")
+    private String url;
+
     private final UsuarioServicio usuarioServicio;
     private final CorreoServicio correoServicio;
     private final LoginServicio loginServicio;
@@ -73,7 +78,7 @@ public class LoginController {
         }
 
         if (usuario.getRestablecer()){
-            session.setAttribute("mensaje","Se ha solicitado restablecer su cuenta, favor revise su bandeja de entrada");
+            session.setAttribute("mensaje","Se ha solicitado restablecer su cuenta, favor de revisar su bandeja de entrada");
             session.setAttribute("clase", "danger");
             return "redirect:/login";
         }
@@ -122,11 +127,10 @@ public class LoginController {
         usuario.setPasswordUsuario(loginServicio.codificarPassword(usuario.getPasswordUsuario()));
         usuario.setConfirmar(false);
         usuario.setRestablecer(false);
-        usuario.setToken(loginServicio.generarToken(usuario.getNombreUsuario()));
+        usuario.setToken(loginServicio.generarToken(usuario.getNombreUsuario(), usuario.getCorreoUsuario()));
         usuario.setCorreoUsuario(usuario.getCorreoUsuario().toUpperCase());
         usuarioServicio.AgregarUsuario(usuario);
 
-        String url = "https://spring-web-ecommerce-4108af4f0588.herokuapp.com";
         url += "/confirmar/" + usuario.getToken();
 
         Correo correo = new Correo(usuario.getCorreoUsuario(), "Correo confirmacion", url);
@@ -195,9 +199,8 @@ public class LoginController {
         boolean respuesta = usuarioServicio.SolicitarContrasenia(correo);
 
         if (respuesta){
-            usuarioServicio.GuardarToken(loginServicio.generarToken(usuario.getNombreUsuario()), usuario.getUsuarioId());
-            String url = "https://spring-web-ecommerce-4108af4f0588.herokuapp.com";
-            url += "/restablecer/" + loginServicio.generarToken(usuario.getNombreUsuario());
+            usuarioServicio.GuardarToken(loginServicio.generarToken(usuario.getNombreUsuario(), usuario.getCorreoUsuario()), usuario.getUsuarioId());
+            url += "/restablecer/" + loginServicio.generarToken(usuario.getNombreUsuario(), usuario.getCorreoUsuario());
             Correo structurecorreo = new Correo(usuario.getCorreoUsuario(), "Restablecer cuenta", url);
             correoServicio.enviarEmail(structurecorreo);
 

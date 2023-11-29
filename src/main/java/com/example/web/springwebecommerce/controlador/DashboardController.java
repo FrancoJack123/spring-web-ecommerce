@@ -25,6 +25,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/Dashboard")
 public class DashboardController {
+
     @Value("${storage.location}")
     private String storageLocation;
     private final UsuarioServicio usuarioServicio;

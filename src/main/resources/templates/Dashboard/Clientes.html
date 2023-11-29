@@ -1,85 +1,85 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th = "http://www.thymeleaf.org" >
-    <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <title>Dashboard - SB Admin</title>
-        <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico" />
-        <link href="https://cdn.datatables.net/v/bs5/dt-1.13.6/datatables.min.css" rel="stylesheet">
-        <link href="/css/styles.css" rel="stylesheet" />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
-        <style>
-            @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-        </style>
-    </head>
-    <body class="sb-nav-fixed">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <title>Dashboard - SB Admin</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico"/>
+    <link href="https://cdn.datatables.net/v/bs5/dt-1.13.6/datatables.min.css" rel="stylesheet">
+    <link href="/css/styles.css" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    </style>
+</head>
+<body class="sb-nav-fixed">
 
-        <div th:include="Dashboard/headerTemplate.html::header"></div>
+<div th:include="Dashboard/headerTemplate.html::header"></div>
 
-        <div id="layoutSidenav">
+<div id="layoutSidenav">
 
-            <div th:include="Dashboard/headerTemplate.html::navegation"></div>
+    <div th:include="Dashboard/headerTemplate.html::navegation"></div>
 
-            <div id="layoutSidenav_content">
-                <main>
-                    <div class="container-fluid px-4">
-                        <h1 class="mt-4">Clientes</h1>
-                        <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item"><a href="Dashboard.html">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Mantenimiento</li>
-                            <li class="breadcrumb-item active">Clientes</li>
-                        </ol>
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                <i class="fas fa-table me-1"></i>
-                                DataTable Example
-                            </div>
-                            <div class="card-body">
-                                <table id="datatablesSimple" class="table table-bordered">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th>DNI</th>
-                                            <th>Nombre</th>
-                                            <th>Apellido</th>
-                                            <th>Telefono</th>
-                                            <th>Correo</th>
-                                        </tr>
-                                    </thead>
-                                    <tfoot class="table-light">
-                                        <tr>
-                                            <th>DNI</th>
-                                            <th>Nombre</th>
-                                            <th>Apellido</th>
-                                            <th>Telefono</th>
-                                            <th>Correo</th>
-                                        </tr>
-                                    </tfoot>
-                                    <tbody>
-                                        <tr th:each="cliente: ${listadoClientes}">
-                                            <td th:text="${cliente.dniUsuario}"></td>
-                                            <td th:text="${cliente.nombreUsuario}"></td>
-                                            <td th:text="${cliente.apellidoUsuario}"></td>
-                                            <td th:text="${cliente.telefonoUsuario}"></td>
-                                            <td th:text="${cliente.correoUsuario}"></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid px-4">
+                <h1 class="mt-4">Clientes</h1>
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item"><a th:href="@{/Dashboard/}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Mantenimiento</li>
+                    <li class="breadcrumb-item active">Clientes</li>
+                </ol>
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-table me-1"></i>
+                        DataTable Example
                     </div>
-                </main>
-
-                <div th:include="Dashboard/headerTemplate.html::footer"></div>
-
+                    <div class="card-body">
+                        <table id="datatablesSimple" class="table table-bordered">
+                            <thead class="table-light">
+                            <tr>
+                                <th>DNI</th>
+                                <th>Nombre</th>
+                                <th>Apellido</th>
+                                <th>Telefono</th>
+                                <th>Correo</th>
+                            </tr>
+                            </thead>
+                            <tfoot class="table-light">
+                            <tr>
+                                <th>DNI</th>
+                                <th>Nombre</th>
+                                <th>Apellido</th>
+                                <th>Telefono</th>
+                                <th>Correo</th>
+                            </tr>
+                            </tfoot>
+                            <tbody>
+                            <tr th:each="cliente: ${listadoClientes}">
+                                <td th:text="${cliente.dniUsuario}"></td>
+                                <td th:text="${cliente.nombreUsuario}"></td>
+                                <td th:text="${cliente.apellidoUsuario}"></td>
+                                <td th:text="${cliente.telefonoUsuario}"></td>
+                                <td th:text="${cliente.correoUsuario}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-        </div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src="/js/scripts.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-        <script src="/jquery/jquery-3.3.1.min.js"></script>
-        <script src="https://cdn.datatables.net/v/bs5/dt-1.13.6/datatables.min.js"></script>
-        <script src="/js/datatables-search-script.js"></script>
-    </body>
+        </main>
+
+        <div th:include="Dashboard/headerTemplate.html::footer"></div>
+
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script src="/js/scripts.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+<script src="/jquery/jquery-3.3.1.min.js"></script>
+<script src="https://cdn.datatables.net/v/bs5/dt-1.13.6/datatables.min.js"></script>
+<script src="/js/datatables-search-script.js"></script>
+</body>
 </html>

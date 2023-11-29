@@ -12,8 +12,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Service
 public class LoginServicio {
     private static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-    public String generarToken(String nombreUsuario) {
+    public String generarToken(String nombreUsuario, String correo) {
         return Jwts.builder()
+                .claim("correo", correo)
                 .claim("nombreUsuario", nombreUsuario)
                 .signWith(SECRET_KEY)
                 .compact();

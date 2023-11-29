@@ -28,7 +28,7 @@
                 <h1 class="mt-4">Categoria</h1>
                 <ol class="breadcrumb mb-4">
                     <li class="breadcrumb-item">
-                        <a href="Dashboard.html">Dashboard</a>
+                        <a th:href="@{/Dashboard/}">Dashboard</a>
                     </li>
                     <li class="breadcrumb-item active">Mantenimiento</li>
                     <li class="breadcrumb-item active">Categoria</li>
@@ -41,29 +41,29 @@
                     <div class="card-body">
                         <table id="datatablesSimple" class="table table-bordered">
                             <thead class="table-light">
-                                <tr>
-                                    <th>#</th>
-                                    <th>Categoria</th>
-                                    <th></th>
-                                </tr>
+                            <tr>
+                                <th>#</th>
+                                <th>Categoria</th>
+                                <th></th>
+                            </tr>
                             </thead>
                             <tfoot class="table-light">
-                                <tr>
-                                    <th>#</th>
-                                    <th>Categoria</th>
-                                    <th></th>
-                                </tr>
+                            <tr>
+                                <th>#</th>
+                                <th>Categoria</th>
+                                <th></th>
+                            </tr>
                             </tfoot>
                             <tbody>
-                                <tr th:each="categoria: ${listadoCategoria}">
-                                    <th th:text="${categoria.categoriaId}"></th>
-                                    <td th:text="${categoria.nombreCategoria}"></td>
-                                    <td class="text-center col-1">
-                                        <a class="btn" th:attr="onclick=|abrirModal('${categoria.categoriaId}')|" style="background-color: #e9ecef; border: 1px solid #ced4da;">
-                                            <i class="fas fa-pen text-secondary"></i>
-                                        </a>
-                                    </td>
-                                </tr>
+                            <tr th:each="categoria: ${listadoCategoria}">
+                                <th th:text="${categoria.categoriaId}"></th>
+                                <td th:text="${categoria.nombreCategoria}"></td>
+                                <td class="text-center col-1">
+                                    <a class="btn" th:attr="onclick=|abrirModal('${categoria.categoriaId}')|" style="background-color: #e9ecef; border: 1px solid #ced4da;">
+                                        <i class="fas fa-pen text-secondary"></i>
+                                    </a>
+                                </td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>

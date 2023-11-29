@@ -28,7 +28,7 @@
                 <h1 class="mt-4">Rol</h1>
                 <ol class="breadcrumb mb-4">
                     <li class="breadcrumb-item">
-                        <a href="Dashboard.html">Dashboard</a>
+                        <a th:href="@{/Dashboard/}">Dashboard</a>
                     </li>
                     <li class="breadcrumb-item active">Mantenimiento</li>
                     <li class="breadcrumb-item active">Rol</li>
@@ -41,18 +41,18 @@
                     <div class="card-body">
                         <table id="datatablesSimple" class="table table-bordered">
                             <thead class="table-light">
-                                <tr>
-                                    <th>#</th>
-                                    <th>Nombre</th>
-                                    <th></th>
-                                </tr>
+                            <tr>
+                                <th>#</th>
+                                <th>Nombre</th>
+                                <th></th>
+                            </tr>
                             </thead>
                             <tfoot class="table-light">
-                                <tr>
-                                    <th>#</th>
-                                    <th>Nombre</th>
-                                    <th></th>
-                                </tr>
+                            <tr>
+                                <th>#</th>
+                                <th>Nombre</th>
+                                <th></th>
+                            </tr>
                             </tfoot>
                             <tbody>
                             <tr th:each="rol: ${listadoRoles}">

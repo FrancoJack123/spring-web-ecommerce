@@ -19,6 +19,7 @@ public class DetallePedido {
     private Long detallePedidoId;
 
     private Integer cantidadDetalle;
+    private Double precioUnitario;
     private Double precioVentaDetalle;
 
     @ManyToOne
@@ -32,6 +33,13 @@ public class DetallePedido {
 
     public DetallePedido(Integer cantidadDetalle, Double precioVentaDetalle, Producto productoId) {
         this.cantidadDetalle = cantidadDetalle;
+        this.precioVentaDetalle = precioVentaDetalle;
+        this.productoId = productoId;
+    }
+
+    public DetallePedido(Integer cantidadDetalle, Double precioUnitario, Double precioVentaDetalle, Producto productoId) {
+        this.cantidadDetalle = cantidadDetalle;
+        this.precioUnitario = precioUnitario;
         this.precioVentaDetalle = precioVentaDetalle;
         this.productoId = productoId;
     }

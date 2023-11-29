@@ -1,186 +1,186 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th = "http://www.thymeleaf.org" >
-    <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <title>Dashboard - SB Admin</title>
-        <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico" />
-        <link href="https://cdn.datatables.net/v/bs5/dt-1.13.6/datatables.min.css" rel="stylesheet">
-        <link href="/css/styles.css" rel="stylesheet" />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
-        <style>
-            @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-        </style>
-    </head>
-    <body class="sb-nav-fixed">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <title>Dashboard - SB Admin</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico"/>
+    <link href="https://cdn.datatables.net/v/bs5/dt-1.13.6/datatables.min.css" rel="stylesheet">
+    <link href="/css/styles.css" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    </style>
+</head>
+<body class="sb-nav-fixed">
 
-        <div th:include="Dashboard/headerTemplate.html::header"></div>
+<div th:include="Dashboard/headerTemplate.html::header"></div>
 
-        <div id="layoutSidenav">
+<div id="layoutSidenav">
 
-            <div th:include="Dashboard/headerTemplate.html::navegation"></div>
+    <div th:include="Dashboard/headerTemplate.html::navegation"></div>
 
-            <div id="layoutSidenav_content">
-                <main>
-                    <div class="container-fluid px-4">
-                        <h1 class="mt-4">Usuarios</h1>
-                        <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item"><a href="Dashboard.html">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Mantenimiento</li>
-                            <li class="breadcrumb-item active">Usuarios</li>
-                        </ol>
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid px-4">
+                <h1 class="mt-4">Usuarios</h1>
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item"><a th:href="@{/Dashboard/}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Mantenimiento</li>
+                    <li class="breadcrumb-item active">Usuarios</li>
+                </ol>
 
-                        <div th:if="${mensaje != null && !mensaje.isEmpty()}" th:class="'alert alert-' + ${clase}  + ' alert-dismissible fade show text-center'" role="alert">
-                            <strong th:text="${mensaje} + ' !!!'"></strong>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                <i class="fas fa-table me-1"></i>
-                                DataTable Example
-                            </div>
-                            <div class="card-body">
-                                <table id="datatablesSimple" class="table table-bordered">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Cargo</th>
-                                            <th>Nombre</th>
-                                            <th>Apellido</th>
-                                            <th>Telefono</th>
-                                            <th>Correo</th>
-                                            <th> </th>
-                                        </tr>
-                                    </thead>
-                                    <tfoot class="table-light">
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Cargo</th>
-                                            <th>Nombre</th>
-                                            <th>Apellido</th>
-                                            <th>Telefono</th>
-                                            <th>Correo</th>
-                                            <th> </th>
-                                        </tr>
-                                    </tfoot>
-                                    <tbody>
-                                        <tr th:each="user: ${listadoUsuarios}" >
-                                            <td th:text="${user.usuarioId}"></td>
-                                            <td th:text="${user.cargoId.nombreRol}"></td>
-                                            <td th:text="${user.nombreUsuario}"></td>
-                                            <td th:text="${user.apellidoUsuario}"></td>
-                                            <td th:text="${user.telefonoUsuario}"></td>
-                                            <td th:text="${user.correoUsuario}"></td>
-                                            <td class="text-center col-1">
-                                                <div class="d-flex justify-content-center align-content-center gap-3">
-                                                    <div class="">
-                                                        <a class="btn" th:attr="onclick=|abrirModal('${user.usuarioId}')|" style="background-color: #e9ecef; border: 1px solid #ced4da;">
-                                                            <i class="fas fa-pen text-secondary"></i>
-                                                        </a>
-                                                    </div>
-                                                    <div class="">
-                                                        <form id="desacForm" th:action="@{/Dashboard/DesactivarUsuarios}" method="post" onsubmit="return confirm('¿Estás seguro de que deseas desactivar este usuario?')">
-                                                            <input type="hidden" th:value="${user.usuarioId}" name="usuarioId">
-                                                            <button class="btn col" type="submit" style="background-color: #e9ecef; border: 1px solid #ced4da;">
-                                                                <i class="fas fa-exclamation-circle text-secondary"></i>
-                                                            </button>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </main>
-
-                <!-- Modal -->
-                <div class="modal fade" id="modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
-                        <form id="form" class="needs-validation" th:action="@{/Dashboard/Usuarios}" method="post" th:object="${usuario}" novalidate>
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal</h1>
-                                    <button type="button" onclick="Limpieza()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <input type="hidden" name="usuarioId" id="usuarioId" value="0">
-                                    <div class="row mb-3">
-                                        <div class="col">
-                                            <label for="nombreUsuario" class="form-label">Nombre</label>
-                                            <input id="nombreUsuario" name="nombreUsuario" type="text" class="form-control" placeholder="Ingrese el nombre del Usuario" required>
-                                            <div class="invalid-feedback">
-                                                Porfavor debe ingresar un nombre de Usuario
-                                            </div>
-                                        </div>
-                                        <div class="col">
-                                            <label for="apellidoUsuario" class="form-label">Apellido</label>
-                                            <input id="apellidoUsuario" name="apellidoUsuario" type="text" class="form-control" placeholder="Ingrese el apellido del Usuario" required>
-                                            <div class="invalid-feedback">
-                                                Porfavor debe ingresar un apellido de Usuario
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="dniUsuario" class="form-label">DNI</label>
-                                        <input id="dniUsuario" name="dniUsuario" type="text" class="form-control" placeholder="Ingrese el DNI del Usuario" required>
-                                        <div class="invalid-feedback">
-                                            Porfavor debe ingresar un DNI de Usuario
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">Cargo</label>
-                                        <select class="form-select" aria-label="Default select example" name="cargoId" id="cargoId" >
-                                            <option th:each="cargo: ${listarRoles}" th:value="${cargo.rolId}" th:text="${cargo.nombreRol}"></option>
-                                        </select>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="telefonoUsuario" class="form-label">Telefono</label>
-                                        <input id="telefonoUsuario" name="telefonoUsuario" type="text" class="form-control" placeholder="Ingrese el telefono del Usuario" required>
-                                        <div class="invalid-feedback">
-                                            Porfavor debe ingresar un telefono de Usuario
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="correoUsuario" class="form-label">Correo Electronico</label>
-                                        <input id="correoUsuario" name="correoUsuario" type="text" class="form-control" placeholder="Ingrese el correo del Usuario" required>
-                                        <div class="invalid-feedback">
-                                            Porfavor debe ingresar un correo de Usuario
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="passwordUsuario" class="form-label">Password</label>
-                                        <input id="passwordUsuario" name="passwordUsuario" type="password" class="form-control" placeholder="Ingrese el password del Usuario" required>
-                                        <div class="invalid-feedback">
-                                            Porfavor debe ingresar un password de Usuario
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" onclick="Limpieza()" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                    <button type="submit" class="btn btn-primary">Guardar</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+                <div th:if="${mensaje != null && !mensaje.isEmpty()}" th:class="'alert alert-' + ${clase}  + ' alert-dismissible fade show text-center'" role="alert">
+                    <strong th:text="${mensaje} + ' !!!'"></strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
 
-                <div th:include="Dashboard/headerTemplate.html::footer"></div>
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-table me-1"></i>
+                        DataTable Example
+                    </div>
+                    <div class="card-body">
+                        <table id="datatablesSimple" class="table table-bordered">
+                            <thead class="table-light">
+                            <tr>
+                                <th>#</th>
+                                <th>Cargo</th>
+                                <th>Nombre</th>
+                                <th>Apellido</th>
+                                <th>Telefono</th>
+                                <th>Correo</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tfoot class="table-light">
+                            <tr>
+                                <th>#</th>
+                                <th>Cargo</th>
+                                <th>Nombre</th>
+                                <th>Apellido</th>
+                                <th>Telefono</th>
+                                <th>Correo</th>
+                                <th></th>
+                            </tr>
+                            </tfoot>
+                            <tbody>
+                            <tr th:each="user: ${listadoUsuarios}">
+                                <td th:text="${user.usuarioId}"></td>
+                                <td th:text="${user.cargoId.nombreRol}"></td>
+                                <td th:text="${user.nombreUsuario}"></td>
+                                <td th:text="${user.apellidoUsuario}"></td>
+                                <td th:text="${user.telefonoUsuario}"></td>
+                                <td th:text="${user.correoUsuario}"></td>
+                                <td class="text-center col-1">
+                                    <div class="d-flex justify-content-center align-content-center gap-3">
+                                        <div class="">
+                                            <a class="btn" th:attr="onclick=|abrirModal('${user.usuarioId}')|" style="background-color: #e9ecef; border: 1px solid #ced4da;">
+                                                <i class="fas fa-pen text-secondary"></i>
+                                            </a>
+                                        </div>
+                                        <div class="">
+                                            <form id="desacForm" th:action="@{/Dashboard/DesactivarUsuarios}" method="post" onsubmit="return confirm('¿Estás seguro de que deseas desactivar este usuario?')">
+                                                <input type="hidden" th:value="${user.usuarioId}" name="usuarioId">
+                                                <button class="btn col" type="submit" style="background-color: #e9ecef; border: 1px solid #ced4da;">
+                                                    <i class="fas fa-exclamation-circle text-secondary"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
 
+        <!-- Modal -->
+        <div class="modal fade" id="modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <form id="form" class="needs-validation" th:action="@{/Dashboard/Usuarios}" method="post" th:object="${usuario}" novalidate>
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal</h1>
+                            <button type="button" onclick="Limpieza()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" name="usuarioId" id="usuarioId" value="0">
+                            <div class="row mb-3">
+                                <div class="col">
+                                    <label for="nombreUsuario" class="form-label">Nombre</label>
+                                    <input id="nombreUsuario" name="nombreUsuario" type="text" class="form-control" placeholder="Ingrese el nombre del Usuario" required>
+                                    <div class="invalid-feedback">
+                                        Porfavor debe ingresar un nombre de Usuario
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <label for="apellidoUsuario" class="form-label">Apellido</label>
+                                    <input id="apellidoUsuario" name="apellidoUsuario" type="text" class="form-control" placeholder="Ingrese el apellido del Usuario" required>
+                                    <div class="invalid-feedback">
+                                        Porfavor debe ingresar un apellido de Usuario
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="dniUsuario" class="form-label">DNI</label>
+                                <input id="dniUsuario" name="dniUsuario" type="text" class="form-control" placeholder="Ingrese el DNI del Usuario" required>
+                                <div class="invalid-feedback">
+                                    Porfavor debe ingresar un DNI de Usuario
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Cargo</label>
+                                <select class="form-select" aria-label="Default select example" name="cargoId" id="cargoId">
+                                    <option th:each="cargo: ${listarRoles}" th:value="${cargo.rolId}" th:text="${cargo.nombreRol}"></option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="telefonoUsuario" class="form-label">Telefono</label>
+                                <input id="telefonoUsuario" name="telefonoUsuario" type="text" class="form-control" placeholder="Ingrese el telefono del Usuario" required>
+                                <div class="invalid-feedback">
+                                    Porfavor debe ingresar un telefono de Usuario
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="correoUsuario" class="form-label">Correo Electronico</label>
+                                <input id="correoUsuario" name="correoUsuario" type="text" class="form-control" placeholder="Ingrese el correo del Usuario" required>
+                                <div class="invalid-feedback">
+                                    Porfavor debe ingresar un correo de Usuario
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="passwordUsuario" class="form-label">Password</label>
+                                <input id="passwordUsuario" name="passwordUsuario" type="password" class="form-control" placeholder="Ingrese el password del Usuario" required>
+                                <div class="invalid-feedback">
+                                    Porfavor debe ingresar un password de Usuario
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" onclick="Limpieza()" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src="/js/scripts.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-        <script src="/jquery/jquery-3.3.1.min.js"></script>
-        <script src="https://cdn.datatables.net/v/bs5/dt-1.13.6/datatables.min.js"></script>
-        <script src="/js/datatables-simple-demo.js"></script>
-        <script src="/scripts/usuario.js"></script>
-        <script src="/scripts/validationForm.js"></script>
-    </body>
+
+        <div th:include="Dashboard/headerTemplate.html::footer"></div>
+
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script src="/js/scripts.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+<script src="/jquery/jquery-3.3.1.min.js"></script>
+<script src="https://cdn.datatables.net/v/bs5/dt-1.13.6/datatables.min.js"></script>
+<script src="/js/datatables-simple-demo.js"></script>
+<script src="/scripts/usuario.js"></script>
+<script src="/scripts/validationForm.js"></script>
+</body>
 </html>

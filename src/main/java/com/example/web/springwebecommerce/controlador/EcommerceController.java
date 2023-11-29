@@ -142,7 +142,7 @@ public class EcommerceController {
             }
         }
 
-        carrito.add(new DetallePedido(cantidad, (precioDetalleSinCantidad * cantidad), producto));
+        carrito.add(new DetallePedido(cantidad, precioDetalleSinCantidad,(precioDetalleSinCantidad * cantidad), producto));
 
         this.guardarCarrito(carrito, session);
 
@@ -171,6 +171,7 @@ public class EcommerceController {
         model.addAttribute("carrito", carrito);
 
         model.addAttribute("mensaje", mensaje);
+        model.addAttribute("montoTotal", carrito.stream().mapToDouble(DetallePedido::getPrecioVentaDetalle).sum());
 
         return "Ecommerce/CarritoCompras";
     }
