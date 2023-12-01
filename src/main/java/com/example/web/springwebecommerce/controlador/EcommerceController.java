@@ -1,9 +1,7 @@
 package com.example.web.springwebecommerce.controlador;
 
 import com.example.web.springwebecommerce.entidad.*;
-import com.example.web.springwebecommerce.servicios.*;
-import com.example.web.springwebecommerce.utilidad.correo.modelo.Correo;
-import com.example.web.springwebecommerce.utilidad.correo.servicio.CorreoServicio;
+import com.example.web.springwebecommerce.implementacion.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,26 +18,21 @@ import java.util.List;
 @Controller
 @RequestMapping("/Ecommerce")
 public class EcommerceController {
-    private final ProductoServicio productoServicio;
-    private final MarcaServicio marcaServicio;
-    private final CategoriaServicio categoriaServicio;
-    private final PedidoServico pedidoServico;
-    private final DetallePedidoServicio detallePedidoServicio;
 
     @Autowired
-    public EcommerceController(
-            ProductoServicio productoServicio,
-            MarcaServicio marcaServicio,
-            CategoriaServicio categoriaServicio,
-            PedidoServico pedidoServico,
-            DetallePedidoServicio detallePedidoServicio
-    ){
-        this.productoServicio = productoServicio;
-        this.marcaServicio = marcaServicio;
-        this.categoriaServicio = categoriaServicio;
-        this.pedidoServico = pedidoServico;
-        this.detallePedidoServicio = detallePedidoServicio;
-    }
+    private IProducto iProducto;
+
+    @Autowired
+    private IMarca iMarca;
+
+    @Autowired
+    private ICategoria iCategoria;
+
+    @Autowired
+    private IPedido iPedido;
+
+    @Autowired
+    private IDetallePedido iDetallePedido;
 
     @GetMapping("/")
     public String ListarProductoCategoriaMarcas(
@@ -51,9 +43,9 @@ public class EcommerceController {
             Model model
     ){
         PageRequest pageable = PageRequest.of(page, size);
-        Page<Producto> Listado = productoServicio.ListarProductoCategoriaMarca(marcaId,categoriaId,pageable);
-        List<Marca> marcas = marcaServicio.ListarMarca();
-        List<Categoria> categorias = categoriaServicio.ListarCategoria();
+        Page<Producto> Listado = iProducto.ListarProductoCategoriaMarca(marcaId,categoriaId,pageable);
+        List<Marca> marcas = iMarca.ListarMarca();
+        List<Categoria> categorias = iCategoria.ListarCategoria();
 
         //Metodo para la paginacion
         int cantLis = (int) Listado.getTotalElements();
@@ -79,12 +71,12 @@ public class EcommerceController {
             @PathVariable Long idproducto,
             Model model
     ){
-        Producto producto = productoServicio.BuscarProducto(idproducto);
-        List<Producto> Listadoproductos = productoServicio.ListarProductosRelacionados(0L, producto.getCategoriaId().getCategoriaId());
+        Producto producto = iProducto.BuscarProducto(idproducto);
+        List<Producto> Listadoproductos = iProducto.ListarProductosRelacionados(producto.getMarcaId().getMarcaId(), producto.getCategoriaId().getCategoriaId());
 
         Listadoproductos.remove(producto);
 
-        if(Listadoproductos.size() == 5){
+        if(Listadoproductos.size() >= 5){
             Listadoproductos = Listadoproductos.subList(0,4);
         }
 
@@ -114,7 +106,7 @@ public class EcommerceController {
     ){
 
         List<DetallePedido> carrito = this.obtenerCarrito(session);
-        Producto producto = productoServicio.BuscarProducto(productoId);
+        Producto producto = iProducto.BuscarProducto(productoId);
 
 
         if ((producto == null)){
@@ -192,7 +184,7 @@ public class EcommerceController {
         carrito.forEach(detallePedido -> detallePedido.setPedidoId(pedido));
         pedido.setDetalle(carrito);
 
-        pedidoServico.AgregarPedido(pedido);
+        iPedido.AgregarPedido(pedido);
 
         carrito.clear();
 
@@ -208,7 +200,7 @@ public class EcommerceController {
     ){
         Usuario cliente = (Usuario) session.getAttribute("usuario");
         PageRequest pageable = PageRequest.of(page, size);
-        Page<Pedido> list = pedidoServico.ListarPedidosClienteId(cliente.getUsuarioId(), pageable);
+        Page<Pedido> list = iPedido.ListarPedidosClienteId(cliente.getUsuarioId(), pageable);
 
         //Metodo para la paginacion
         int cantLis = (int) list.getTotalElements();
@@ -226,7 +218,7 @@ public class EcommerceController {
 
     @GetMapping("/listaDetallePedido/{pedidoID}")
     public ResponseEntity<List<DetallePedido>> ListarPedidosUsuarioId(@PathVariable Long pedidoID){
-        List<DetallePedido> list = detallePedidoServicio.ListaDetallePedidoId(pedidoID);
+        List<DetallePedido> list = iDetallePedido.ListaDetallePedidoId(pedidoID);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 }

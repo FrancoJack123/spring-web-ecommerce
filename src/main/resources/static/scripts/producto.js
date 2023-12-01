@@ -32,6 +32,11 @@ function abrirModal(codigo){
     $('#modal').modal('show')
 }
 
+function activeModal(codigo){
+    $('#productoActivarId').val(codigo)
+    $('#staticBackdrop').modal('show')
+}
+
 document.getElementById('formFile').onchange = function (e){
     let reader = new FileReader();
     reader.readAsDataURL(e.target.files[0]);

@@ -4,7 +4,7 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-    <title>Dashboard - SB Admin</title>
+    <title>Productos</title>
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico"/>
     <link href="https://cdn.datatables.net/v/bs5/dt-1.13.6/datatables.min.css" rel="stylesheet">
@@ -46,7 +46,6 @@
                                 <th>Nombre</th>
                                 <th>Precio</th>
                                 <th>Stock</th>
-                                <th>Estado</th>
                                 <th></th>
                             </tr>
                             </thead>
@@ -58,7 +57,6 @@
                                 <th>Nombre</th>
                                 <th>Precio</th>
                                 <th>Stock</th>
-                                <th>Estado</th>
                                 <th></th>
                             </tr>
                             </tfoot>
@@ -70,8 +68,7 @@
                                 <td th:text="${producto.getNombreProducto()}"></td>
                                 <td th:text="${producto.getPrecioProducto()}"></td>
                                 <td th:text="${producto.getCantidadProducto()}"></td>
-                                <td th:text="${producto.getEstadoProducto()}"></td>
-                                <td class="text-center col-1">
+                                <td th:if="${producto.getEstadoProducto() == true}" class="text-center col-1">
                                     <div class="d-flex justify-content-center align-items-center gap-3">
                                         <a class="btn" th:attr="onclick=|abrirModal('${producto.productoId}')|" style="background-color: #e9ecef; border: 1px solid #ced4da;">
                                             <i class="fas fa-pen text-secondary"></i>
@@ -84,6 +81,11 @@
                                         </div>
                                     </div>
                                 </td>
+                                <td th:if="${producto.getEstadoProducto() == false}" class="text-center col-1">
+                                    <div class="d-flex justify-content-center align-items-center gap-3">
+                                        <button class="btn" th:attr="onclick=|activeModal('${producto.productoId}')|" style="background-color: #e9ecef; border: 1px solid #ced4da;"><i class="fas fa-exclamation-triangle text-secondary"></i></button>
+                                    </div>
+                                </td>
                             </tr>
                             </tbody>
                         </table>
@@ -91,6 +93,33 @@
                 </div>
             </div>
         </main>
+
+        <!-- Modal Activar Producto -->
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form th:action="@{/Dashboard/ActivarProducto}" method="post">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Activar Producto</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" name="productoId" id="productoActivarId">
+                            <div class="mb-3">
+                                <label class="form-label">Cantidad</label>
+                                <div>
+                                    <input class="form-control" type="number" name="cantidad" value="1">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-primary">Activar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
         <!-- Modal -->
         <div class="modal fade" id="modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"

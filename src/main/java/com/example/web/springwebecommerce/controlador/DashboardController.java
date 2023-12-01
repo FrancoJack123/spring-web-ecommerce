@@ -1,13 +1,12 @@
 package com.example.web.springwebecommerce.controlador;
 
+import ch.qos.logback.core.model.INamedModel;
 import com.example.web.springwebecommerce.entidad.*;
-import com.example.web.springwebecommerce.servicios.*;
+import com.example.web.springwebecommerce.implementacion.*;
 import com.example.web.springwebecommerce.utilidad.login.LoginServicio;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -16,9 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
@@ -28,22 +25,24 @@ public class DashboardController {
 
     @Value("${storage.location}")
     private String storageLocation;
-    private final UsuarioServicio usuarioServicio;
-    private final RolServicio rolServicio;
-    private final MarcaServicio marcaServicio;
-    private final CategoriaServicio categoriaServicio;
-    private final ProductoServicio productoServicio;
-    private final LoginServicio loginServicio;
 
     @Autowired
-    public DashboardController(UsuarioServicio u, RolServicio r, MarcaServicio m, CategoriaServicio c, ProductoServicio p, LoginServicio l){
-        this.usuarioServicio = u;
-        this.rolServicio = r;
-        this.marcaServicio = m;
-        this.categoriaServicio = c;
-        this.productoServicio = p;
-        this.loginServicio = l;
-    }
+    private IUsuario iUsuario;
+
+    @Autowired
+    private IRol iRol;
+
+    @Autowired
+    private IMarca iMarca;
+
+    @Autowired
+    private ICategoria iCategoria;
+
+    @Autowired
+    private IProducto iProducto;
+
+    @Autowired
+    private LoginServicio loginServicio;
 
     @GetMapping("/")
     public String Dashboard(Model model){
@@ -54,7 +53,7 @@ public class DashboardController {
     @GetMapping("/Rol")
     public String Cargos(Model model){
         Rol rol = new Rol();
-        List<Rol> list = rolServicio.ListarRoles();
+        List<Rol> list = iRol.ListarRoles();
         model.addAttribute("listadoRoles", list);
         model.addAttribute("rol", rol);
         return "Dashboard/Cargo";
@@ -62,13 +61,13 @@ public class DashboardController {
 
     @PostMapping("/Rol")
     public String Cargos(@ModelAttribute Rol rol){
-        rolServicio.GuardarRol(rol);
+        iRol.GuardarRol(rol);
         return "redirect:/Dashboard/Rol";
     }
 
     @GetMapping("/Rol/{rolId}")
     public ResponseEntity<Rol> BuscarCargo(@PathVariable Long rolId){
-        Rol rol = rolServicio.BuscarRol(rolId);
+        Rol rol = iRol.BuscarRol(rolId);
         return new ResponseEntity<>(rol, HttpStatus.OK);
     }
 
@@ -83,8 +82,8 @@ public class DashboardController {
         }
 
         Usuario usuario = new Usuario();
-        List<Rol> listarRoles = rolServicio.ListarRoles();
-        List<Usuario> list = usuarioServicio.ListarUsuarios();
+        List<Rol> listarRoles = iRol.ListarRoles();
+        List<Usuario> list = iUsuario.ListarUsuarios();
         model.addAttribute("listarRoles", listarRoles);
         model.addAttribute("listadoUsuarios", list);
         model.addAttribute("usuario", usuario);
@@ -95,7 +94,7 @@ public class DashboardController {
     public String Usuarios(@ModelAttribute Usuario usuario, HttpSession session){
 
         if (usuario.getUsuarioId() == 0){
-            boolean confirmacorreo = usuarioServicio.correoExitente(usuario.getCorreoUsuario());
+            boolean confirmacorreo = iUsuario.correoExitente(usuario.getCorreoUsuario());
 
             if (confirmacorreo){
                 session.setAttribute("mensaje","El correo " + usuario.getCorreoUsuario().toUpperCase() + " ya fue registrado");
@@ -107,35 +106,42 @@ public class DashboardController {
         usuario.setConfirmar(true);
         usuario.setRestablecer(false);
         usuario.setEstadoUsuario(true);
+        usuario.setCorreoUsuario(usuario.getCorreoUsuario().toUpperCase());
 
         if (usuario.getPasswordUsuario().isBlank() || usuario.getPasswordUsuario() == null){
-            Usuario usuario1 = usuarioServicio.BuscarUsuario(usuario.getUsuarioId());
+            Usuario usuario1 = iUsuario.BuscarUsuario(usuario.getUsuarioId());
             usuario.setPasswordUsuario(usuario1.getPasswordUsuario());
         }else{
             usuario.setPasswordUsuario(loginServicio.codificarPassword(usuario.getPasswordUsuario()));
         }
 
-        usuarioServicio.AgregarUsuario(usuario);
+        iUsuario.AgregarUsuario(usuario);
         return "redirect:/Dashboard/Usuarios";
     }
 
     @GetMapping("/Usuarios/{usuarioId}")
     public ResponseEntity<Usuario> BuscarUsuario(@PathVariable Long usuarioId){
-        Usuario usuario = usuarioServicio.BuscarUsuario(usuarioId);
+        Usuario usuario = iUsuario.BuscarUsuario(usuarioId);
         usuario.setPasswordUsuario("");
         return new ResponseEntity<>(usuario, HttpStatus.OK);
     }
 
     @PostMapping("/DesactivarUsuarios")
     public String DesactivarUsuario(@RequestParam Long usuarioId){
-        usuarioServicio.DesactivarUsuario(usuarioId);
+        iUsuario.DesactivarUsuario(usuarioId);
+        return "redirect:/Dashboard/Usuarios";
+    }
+
+    @PostMapping("/ActivarUsuario")
+    public String ActivarUsuario(@RequestParam Long usuarioIdActivar){
+        iUsuario.ActivarUsuario(usuarioIdActivar);
         return "redirect:/Dashboard/Usuarios";
     }
 
     @GetMapping("/Marcas")
     public String Marcas(Model model){
         Marca marca = new Marca();
-        List<Marca> list = marcaServicio.ListarMarca();
+        List<Marca> list = iMarca.ListarMarca();
         model.addAttribute("listadoMarca", list);
         model.addAttribute("marca", marca);
         return "Dashboard/Marcas";
@@ -143,20 +149,20 @@ public class DashboardController {
 
     @PostMapping("/Marcas")
     public String GuardarMarcas(@ModelAttribute Marca marca){
-        marcaServicio.GuardarMarca(marca);
+        iMarca.GuardarMarca(marca);
         return "redirect:/Dashboard/Marcas";
     }
 
     @GetMapping("/Marcas/{marcaId}")
     public ResponseEntity<Marca> BuscarMarca(@PathVariable Long marcaId){
-        Marca marca = marcaServicio.BuscarMarca(marcaId);
+        Marca marca = iMarca.BuscarMarca(marcaId);
         return new ResponseEntity<>(marca, HttpStatus.OK);
     }
 
     @GetMapping("/Categoria")
     public String Categoria(Model model){
         Categoria categoria = new Categoria();
-        List<Categoria> list = categoriaServicio.ListarCategoria();
+        List<Categoria> list = iCategoria.ListarCategoria();
         model.addAttribute("listadoCategoria", list);
         model.addAttribute("categoria", categoria);
         return "Dashboard/Categoria";
@@ -164,21 +170,21 @@ public class DashboardController {
 
     @PostMapping("/Categoria")
     public String GuardarCategoria(@ModelAttribute Categoria categoria){
-        categoriaServicio.GuardarCategoria(categoria);
+        iCategoria.GuardarCategoria(categoria);
         return "redirect:/Dashboard/Categoria";
     }
 
     @GetMapping("/Categoria/{categoriaId}")
     public ResponseEntity<Categoria> BuscarCategoria(@PathVariable Long categoriaId){
-        Categoria categoria = categoriaServicio.BuscarCategoria(categoriaId);
+        Categoria categoria = iCategoria.BuscarCategoria(categoriaId);
         return new ResponseEntity<>(categoria, HttpStatus.OK);
     }
 
     @GetMapping("/Productos")
     public String Productos(Model model){
-        List<Producto> list = productoServicio.ListarProductos();
-        List<Categoria> listarCategoria = categoriaServicio.ListarCategoria();
-        List<Marca> listarMarca = marcaServicio.ListarMarca();
+        List<Producto> list = iProducto.ListarProductos();
+        List<Categoria> listarCategoria = iCategoria.ListarCategoria();
+        List<Marca> listarMarca = iMarca.ListarMarca();
         Producto producto = new Producto();
         model.addAttribute("listarCategoria", listarCategoria);
         model.addAttribute("listarMarca", listarMarca);
@@ -202,31 +208,40 @@ public class DashboardController {
                 throw new RuntimeException(e);
             }
         }else{
-            Producto producto1 = productoServicio.BuscarProducto(producto.getProductoId());
+            Producto producto1 = iProducto.BuscarProducto(producto.getProductoId());
             producto.setFoto(producto1.getFoto());
         }
 
         producto.setEstadoProducto(true);
-        productoServicio.GuardarProducto(producto);
+        iProducto.GuardarProducto(producto);
         return "redirect:/Dashboard/Productos";
     }
 
     @GetMapping("/Productos/{productoid}")
     public ResponseEntity<Producto> BuscarProducto(@PathVariable Long productoid){
-        Producto producto = productoServicio.BuscarProducto(productoid);
+        Producto producto = iProducto.BuscarProducto(productoid);
         return new ResponseEntity<>(producto, HttpStatus.OK);
     }
 
     @PostMapping("/DesactivarProducto")
     public String DesactivarProducto(@RequestParam Long productoId){
-        productoServicio.DesactivarProducto(productoId);
+        iProducto.DesactivarProducto(productoId);
+        return "redirect:/Dashboard/Productos";
+    }
+
+    @PostMapping("/ActivarProducto")
+    public String ActivarProducto(@RequestParam Long productoId, @RequestParam Integer cantidad){
+        if (cantidad <= 0){
+            return "redirect:/Dashboard/Productos";
+        }
+        iProducto.ActivarProducto(productoId, cantidad);
         return "redirect:/Dashboard/Productos";
     }
 
     @GetMapping("/Clientes")
     public String Clientes(Model model){
         Usuario usuario = new Usuario();
-        List<Usuario> list = usuarioServicio.ListarClientes();
+        List<Usuario> list = iUsuario.ListarClientes();
         model.addAttribute("listadoClientes", list);
         model.addAttribute("cliente", usuario);
         return "Dashboard/Clientes";

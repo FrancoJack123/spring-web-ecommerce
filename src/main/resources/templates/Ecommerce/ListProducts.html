@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Shop Homepage - Start Bootstrap Template</title>
+        <title>Index</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico" />
         <!-- Bootstrap icons-->
@@ -118,12 +118,12 @@
                             </div>
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent d-flex justify-content-center gap-4">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" th:href="@{'/Ecommerce/view/' + ${producto.productoId} }">View details</a></div>
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" th:href="@{'/Ecommerce/view/' + ${producto.productoId} }">Ver detalles</a></div>
                                 <div class="text-center" th:if="${producto.cantidadProducto > 0}">
                                     <form th:action="@{/Ecommerce/guardarProducto}" method="post">
                                         <input type="hidden" name="productoId" th:value="${producto.productoId}">
                                         <input type="hidden" name="cantidad" value="1">
-                                        <button type="submit" class="btn btn-outline-dark mt-auto">Add to cart</button>
+                                        <button type="submit" class="btn btn-outline-dark mt-auto">Añadir</button>
                                     </form>
                                 </div>
                             </div>
@@ -135,11 +135,11 @@
                         <ul class="pagination">
 
                             <li th:if="${page == 0}" class="page-item disabled">
-                                <a class="page-link">Previous</a>
+                                <a class="page-link">Antes</a>
                             </li>
 
                             <li th:if="${!(page == 0)}" class="page-item ">
-                                <a class="page-link" th:href="@{'/Ecommerce/?categoriaId=' + ${categoriaId} + '&marcaId=' + ${marcaId} + '&page=' + ${(page - 1)} }">Previous</a>
+                                <a class="page-link" th:href="@{'/Ecommerce/?categoriaId=' + ${categoriaId} + '&marcaId=' + ${marcaId} + '&page=' + ${(page - 1)} }">Antes</a>
                             </li>
 
                             <li th:each="i : ${#numbers.sequence(1, cantPag)}" th:class="${page == (i - 1) ? 'page-item active' : 'page-item'}">
@@ -147,11 +147,11 @@
                             </li>
 
                             <li th:if="${page == (cantPag - 1)}" class="page-item disabled">
-                                <a class="page-link">Next</a>
+                                <a class="page-link">Siguiente</a>
                             </li>
 
                             <li th:if="${!(page == (cantPag - 1))}"  class="page-item">
-                                <a class="page-link" th:href="@{'/Ecommerce/?categoriaId=' + ${categoriaId} + '&marcaId=' + ${marcaId} + '&page=' + ${page + 1} }">Next</a>
+                                <a class="page-link" th:href="@{'/Ecommerce/?categoriaId=' + ${categoriaId} + '&marcaId=' + ${marcaId} + '&page=' + ${page + 1} }">Siguiente</a>
                             </li>
 
                         </ul>

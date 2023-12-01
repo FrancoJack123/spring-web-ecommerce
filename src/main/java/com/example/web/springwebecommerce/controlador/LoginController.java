@@ -2,6 +2,7 @@ package com.example.web.springwebecommerce.controlador;
 
 import com.example.web.springwebecommerce.entidad.Rol;
 import com.example.web.springwebecommerce.entidad.Usuario;
+import com.example.web.springwebecommerce.implementacion.IUsuario;
 import com.example.web.springwebecommerce.servicios.UsuarioServicio;
 import com.example.web.springwebecommerce.utilidad.correo.modelo.Correo;
 import com.example.web.springwebecommerce.utilidad.correo.servicio.CorreoServicio;
@@ -12,7 +13,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class LoginController {
@@ -20,20 +20,15 @@ public class LoginController {
     @Value("${spring.localhost.direccion}")
     private String url;
 
-    private final UsuarioServicio usuarioServicio;
-    private final CorreoServicio correoServicio;
-    private final LoginServicio loginServicio;
+    @Autowired
+    private IUsuario iUsuario;
 
     @Autowired
-    public LoginController(
-            UsuarioServicio usuarioServicio,
-            CorreoServicio correoServicio,
-            LoginServicio loginServicio
-    ){
-        this.usuarioServicio = usuarioServicio;
-        this.correoServicio = correoServicio;
-        this.loginServicio = loginServicio;
-    }
+    private CorreoServicio correoServicio;
+
+    @Autowired
+    private LoginServicio loginServicio;
+
 
     @GetMapping("/login")
     public String Login(
@@ -57,7 +52,7 @@ public class LoginController {
             @RequestParam String password,
             HttpSession session
     ){
-        Usuario usuario = usuarioServicio.LoginUsuario(correo);
+        Usuario usuario = iUsuario.LoginUsuario(correo);
 
         if (usuario == null){
             session.setAttribute("mensaje","Credenciales incorrectas");
@@ -114,7 +109,7 @@ public class LoginController {
             HttpSession session
     ){
 
-        boolean confirmacorreo = usuarioServicio.correoExitente(usuario.getCorreoUsuario());
+        boolean confirmacorreo = iUsuario.correoExitente(usuario.getCorreoUsuario());
 
         if (confirmacorreo){
             session.setAttribute("mensaje","El correo " + usuario.getCorreoUsuario().toUpperCase() + " ya fue registrado");
@@ -129,7 +124,7 @@ public class LoginController {
         usuario.setRestablecer(false);
         usuario.setToken(loginServicio.generarToken(usuario.getNombreUsuario(), usuario.getCorreoUsuario()));
         usuario.setCorreoUsuario(usuario.getCorreoUsuario().toUpperCase());
-        usuarioServicio.AgregarUsuario(usuario);
+        iUsuario.AgregarUsuario(usuario);
 
         url += "/confirmar/" + usuario.getToken();
 
@@ -153,7 +148,7 @@ public class LoginController {
             @PathVariable String token,
             HttpSession session
     ){
-        boolean confirmar = usuarioServicio.ConfirmarUsuario(token);
+        boolean confirmar = iUsuario.ConfirmarUsuario(token);
 
         if (confirmar) {
             session.setAttribute("mensaje", "Su cuenta ha sido confirmada con exito");
@@ -188,7 +183,7 @@ public class LoginController {
             HttpSession session,
             @RequestParam String correo
     ){
-        Usuario usuario = usuarioServicio.LoginUsuario(correo.toUpperCase());
+        Usuario usuario = iUsuario.LoginUsuario(correo.toUpperCase());
 
         if (usuario == null){
             session.setAttribute("mensaje","No existe una cuenta con el correo " + correo.toUpperCase());
@@ -196,10 +191,10 @@ public class LoginController {
             return "redirect:/solicitar";
         }
 
-        boolean respuesta = usuarioServicio.SolicitarContrasenia(correo);
+        boolean respuesta = iUsuario.SolicitarContrasenia(correo);
 
         if (respuesta){
-            usuarioServicio.GuardarToken(loginServicio.generarToken(usuario.getNombreUsuario(), usuario.getCorreoUsuario()), usuario.getUsuarioId());
+            iUsuario.GuardarToken(loginServicio.generarToken(usuario.getNombreUsuario(), usuario.getCorreoUsuario()), usuario.getUsuarioId());
             url += "/restablecer/" + loginServicio.generarToken(usuario.getNombreUsuario(), usuario.getCorreoUsuario());
             Correo structurecorreo = new Correo(usuario.getCorreoUsuario(), "Restablecer cuenta", url);
             correoServicio.enviarEmail(structurecorreo);
@@ -247,7 +242,7 @@ public class LoginController {
             return "redirect:/restablecer/" + token;
         }
 
-        boolean restablecer = usuarioServicio.RestablecerContrasenia(loginServicio.codificarPassword(contrasenia), token);
+        boolean restablecer = iUsuario.RestablecerContrasenia(loginServicio.codificarPassword(contrasenia), token);
 
         if (restablecer){
             session.setAttribute("mensaje","Su contraseña fue cambiada con exito");

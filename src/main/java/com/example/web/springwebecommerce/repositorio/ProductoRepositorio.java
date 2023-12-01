@@ -16,8 +16,13 @@ import java.util.List;
 public interface ProductoRepositorio extends JpaRepository<Producto, Long> {
     @Modifying
     @Transactional
-    @Query("UPDATE Producto p SET p.estadoProducto = false WHERE p.productoId = :productoId")
+    @Query("UPDATE Producto p SET p.estadoProducto = false, p.cantidadProducto = 0 WHERE p.productoId = :productoId")
     void desactivateProducto(@Param("productoId") Long productoId);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Producto p SET p.estadoProducto = true, p.cantidadProducto = :cantidad WHERE p.productoId = :productoId")
+    void activateProducto(@Param("productoId") Long productoId, @Param("cantidad") Integer cantidad);
 
     //@Query("SELECT p FROM Producto p WHERE p.categoriaId.categoriaId = :categoriaId AND p.marcaId.marcaId = :marcaId")
     @Query("SELECT p FROM Producto p WHERE (p.categoriaId.categoriaId = :categoriaId OR :categoriaId = 0) AND (p.marcaId.marcaId = :marcaId OR :marcaId = 0)")

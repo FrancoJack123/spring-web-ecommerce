@@ -23,6 +23,11 @@ function abrirModal(codigo){
 
 }
 
+function activeModal(codigo){
+    $('#usuarioIdActivar').val(codigo)
+    $('#staticBackdrop').modal('show')
+}
+
 function Limpieza(){
     $('#form').removeClass('was-validated');
     $('#usuarioId').val(0)

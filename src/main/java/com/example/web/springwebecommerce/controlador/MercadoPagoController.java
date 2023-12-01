@@ -3,7 +3,7 @@ package com.example.web.springwebecommerce.controlador;
 import com.example.web.springwebecommerce.entidad.DetallePedido;
 import com.example.web.springwebecommerce.entidad.Pedido;
 import com.example.web.springwebecommerce.entidad.Usuario;
-import com.example.web.springwebecommerce.servicios.PedidoServico;
+import com.example.web.springwebecommerce.implementacion.IPedido;
 import com.mercadopago.MercadoPago;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.Preference;
@@ -34,7 +34,7 @@ public class MercadoPagoController {
     private String clientSecret;
 
     @Autowired
-    private PedidoServico pedidoServico;
+    private IPedido iPedido;
 
     @GetMapping("/FinalizarCompra")
     public String CreateInstance(
@@ -140,7 +140,7 @@ public class MercadoPagoController {
         carrito.forEach(detallePedido -> detallePedido.setPedidoId(pedido));
         pedido.setDetalle(carrito);
 
-        pedidoServico.AgregarPedido(pedido);
+        iPedido.AgregarPedido(pedido);
 
         carrito.clear();
 

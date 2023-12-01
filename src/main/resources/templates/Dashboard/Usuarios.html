@@ -4,7 +4,7 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-    <title>Dashboard - SB Admin</title>
+    <title>Usuarios</title>
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico"/>
     <link href="https://cdn.datatables.net/v/bs5/dt-1.13.6/datatables.min.css" rel="stylesheet">
@@ -73,15 +73,15 @@
                                 <td th:text="${user.nombreUsuario}"></td>
                                 <td th:text="${user.apellidoUsuario}"></td>
                                 <td th:text="${user.telefonoUsuario}"></td>
-                                <td th:text="${user.correoUsuario}"></td>
-                                <td class="text-center col-1">
+                                <td th:text="${user.correoUsuario.toLowerCase()}"></td>
+                                <td th:if="${user.estadoUsuario == true}" class="text-center col-1">
                                     <div class="d-flex justify-content-center align-content-center gap-3">
                                         <div class="">
                                             <a class="btn" th:attr="onclick=|abrirModal('${user.usuarioId}')|" style="background-color: #e9ecef; border: 1px solid #ced4da;">
                                                 <i class="fas fa-pen text-secondary"></i>
                                             </a>
                                         </div>
-                                        <div class="">
+                                        <div class="" th:if="${user.cargoId.rolId != 1}">
                                             <form id="desacForm" th:action="@{/Dashboard/DesactivarUsuarios}" method="post" onsubmit="return confirm('¿Estás seguro de que deseas desactivar este usuario?')">
                                                 <input type="hidden" th:value="${user.usuarioId}" name="usuarioId">
                                                 <button class="btn col" type="submit" style="background-color: #e9ecef; border: 1px solid #ced4da;">
@@ -91,6 +91,11 @@
                                         </div>
                                     </div>
                                 </td>
+                                <td th:if="${user.estadoUsuario == false}" class="text-center col-1">
+                                    <div class="d-flex justify-content-center align-items-center gap-3">
+                                        <button class="btn" th:attr="onclick=|activeModal('${user.usuarioId}')|" style="background-color: #e9ecef; border: 1px solid #ced4da;"><i class="fas fa-exclamation-triangle text-secondary"></i></button>
+                                    </div>
+                                </td>
                             </tr>
                             </tbody>
                         </table>
@@ -98,6 +103,28 @@
                 </div>
             </div>
         </main>
+
+        <!-- Modal Activar Usuario -->
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form th:action="@{/Dashboard/ActivarUsuario}" method="post">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5">Activar Usuario</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" name="usuarioIdActivar" id="usuarioIdActivar">
+                            <p>Desea activar a este Usuario ??</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-primary">Activar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
         <!-- Modal -->
         <div class="modal fade" id="modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">

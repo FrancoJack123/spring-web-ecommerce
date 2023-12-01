@@ -1,8 +1,8 @@
 package com.example.web.springwebecommerce.controlador;
 
+import com.example.web.springwebecommerce.implementacion.IPedido;
 import com.example.web.springwebecommerce.utilidad.reportes.ReportVenta;
 import com.example.web.springwebecommerce.entidad.Pedido;
-import com.example.web.springwebecommerce.servicios.PedidoServico;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import net.sf.jasperreports.engine.*;
@@ -21,7 +21,7 @@ import java.util.*;
 public class ReportController {
 
     @Autowired
-    private PedidoServico pedidoServico;
+    private IPedido iPedido;
 
     @PostMapping("/detalleVenta")
     public void GenerarReporte(
@@ -29,7 +29,7 @@ public class ReportController {
             HttpServletRequest request,
             HttpServletResponse response
     ) throws Exception {
-        Pedido pedido = pedidoServico.BuscarPedido(pedidoId);
+        Pedido pedido = iPedido.BuscarPedido(pedidoId);
 
         List<ReportVenta> reportVentas = new ArrayList<>();
         for (int i = 0; i < pedido.getDetalle().size(); i++){

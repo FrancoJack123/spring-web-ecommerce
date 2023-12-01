@@ -18,7 +18,7 @@ public interface UsuarioRepositorio extends JpaRepository<Usuario, Long> {
     @Query("SELECT c FROM Usuario c WHERE c.cargoId.rolId = 3 AND c.estadoUsuario = true")
     List<Usuario> findClientes();
 
-    @Query("SELECT c FROM Usuario c WHERE c.cargoId.rolId <> 3 AND c.estadoUsuario = true")
+    @Query("SELECT c FROM Usuario c WHERE c.cargoId.rolId <> 3")
     List<Usuario> findUsuarios();
 
     @Query("SELECT u FROM Usuario u WHERE u.correoUsuario = :usuarioCorreo")
@@ -28,6 +28,11 @@ public interface UsuarioRepositorio extends JpaRepository<Usuario, Long> {
     @Transactional
     @Query("UPDATE Usuario u SET u.estadoUsuario = false WHERE u.usuarioId = :usuarioId")
     void desactivateUsuario(@Param("usuarioId") Long usuarioId);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Usuario u SET u.estadoUsuario = true WHERE u.usuarioId = :usuarioId")
+    void activateUsuario(@Param("usuarioId") Long usuarioId);
 
     @Modifying
     @Transactional
