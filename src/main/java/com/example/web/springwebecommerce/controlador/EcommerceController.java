@@ -1,7 +1,7 @@
 package com.example.web.springwebecommerce.controlador;
 
 import com.example.web.springwebecommerce.entidad.*;
-import com.example.web.springwebecommerce.implementacion.*;
+import com.example.web.springwebecommerce.servicios.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -72,7 +72,7 @@ public class EcommerceController {
             Model model
     ){
         Producto producto = iProducto.BuscarProducto(idproducto);
-        List<Producto> Listadoproductos = iProducto.ListarProductosRelacionados(producto.getMarcaId().getMarcaId(), producto.getCategoriaId().getCategoriaId());
+        List<Producto> Listadoproductos = iProducto.ListarProductosRelacionados(0l, producto.getCategoriaId().getCategoriaId());
 
         Listadoproductos.remove(producto);
 

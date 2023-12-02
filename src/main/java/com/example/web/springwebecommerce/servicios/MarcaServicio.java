@@ -1,7 +1,6 @@
 package com.example.web.springwebecommerce.servicios;
 
 import com.example.web.springwebecommerce.entidad.Marca;
-import com.example.web.springwebecommerce.implementacion.IMarca;
 import com.example.web.springwebecommerce.repositorio.MarcaRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

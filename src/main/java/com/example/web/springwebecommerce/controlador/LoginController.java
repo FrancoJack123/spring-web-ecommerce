@@ -2,8 +2,7 @@ package com.example.web.springwebecommerce.controlador;
 
 import com.example.web.springwebecommerce.entidad.Rol;
 import com.example.web.springwebecommerce.entidad.Usuario;
-import com.example.web.springwebecommerce.implementacion.IUsuario;
-import com.example.web.springwebecommerce.servicios.UsuarioServicio;
+import com.example.web.springwebecommerce.servicios.IUsuario;
 import com.example.web.springwebecommerce.utilidad.correo.modelo.Correo;
 import com.example.web.springwebecommerce.utilidad.correo.servicio.CorreoServicio;
 import com.example.web.springwebecommerce.utilidad.login.LoginServicio;

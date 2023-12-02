@@ -1,7 +1,6 @@
 package com.example.web.springwebecommerce.servicios;
 
 import com.example.web.springwebecommerce.entidad.Rol;
-import com.example.web.springwebecommerce.implementacion.IRol;
 import com.example.web.springwebecommerce.repositorio.RolRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

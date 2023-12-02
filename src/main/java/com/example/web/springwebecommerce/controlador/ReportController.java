@@ -1,6 +1,6 @@
 package com.example.web.springwebecommerce.controlador;
 
-import com.example.web.springwebecommerce.implementacion.IPedido;
+import com.example.web.springwebecommerce.servicios.IPedido;
 import com.example.web.springwebecommerce.utilidad.reportes.ReportVenta;
 import com.example.web.springwebecommerce.entidad.Pedido;
 import jakarta.servlet.http.HttpServletRequest;

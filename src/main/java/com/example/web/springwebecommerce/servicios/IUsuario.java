@@ -1,4 +1,4 @@
-package com.example.web.springwebecommerce.implementacion;
+package com.example.web.springwebecommerce.servicios;
 
 import com.example.web.springwebecommerce.entidad.Usuario;
 

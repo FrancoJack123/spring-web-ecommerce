@@ -3,7 +3,7 @@ package com.example.web.springwebecommerce.controlador;
 import com.example.web.springwebecommerce.entidad.DetallePedido;
 import com.example.web.springwebecommerce.entidad.Pedido;
 import com.example.web.springwebecommerce.entidad.Usuario;
-import com.example.web.springwebecommerce.implementacion.IPedido;
+import com.example.web.springwebecommerce.servicios.IPedido;
 import com.mercadopago.MercadoPago;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.Preference;

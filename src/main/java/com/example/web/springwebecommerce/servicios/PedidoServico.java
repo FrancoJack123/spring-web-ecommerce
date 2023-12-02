@@ -1,7 +1,6 @@
 package com.example.web.springwebecommerce.servicios;
 
 import com.example.web.springwebecommerce.entidad.Pedido;
-import com.example.web.springwebecommerce.implementacion.IPedido;
 import com.example.web.springwebecommerce.repositorio.PedidoRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

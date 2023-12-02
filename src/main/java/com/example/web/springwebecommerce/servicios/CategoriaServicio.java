@@ -1,7 +1,6 @@
 package com.example.web.springwebecommerce.servicios;
 
 import com.example.web.springwebecommerce.entidad.Categoria;
-import com.example.web.springwebecommerce.implementacion.ICategoria;
 import com.example.web.springwebecommerce.repositorio.CategoriaRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
