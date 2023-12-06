@@ -125,9 +125,10 @@ public class LoginController {
         usuario.setCorreoUsuario(usuario.getCorreoUsuario().toUpperCase());
         iUsuario.AgregarUsuario(usuario);
 
-        url += "/confirmar/" + usuario.getToken();
 
-        Correo correo = new Correo(usuario.getCorreoUsuario(), "Correo confirmacion", url);
+        String modifiedUrl = url + "/confirmar/" + usuario.getToken();
+
+        Correo correo = new Correo(usuario.getCorreoUsuario(), "Correo confirmacion", modifiedUrl);
         correoServicio.enviarEmail(correo);
 
         session.setAttribute("mensaje","Su cuenta ha sido creada. Hemos enviado un mensaje al correo " + usuario.getCorreoUsuario() + " para confirmar su cuenta");
@@ -194,8 +195,8 @@ public class LoginController {
 
         if (respuesta){
             iUsuario.GuardarToken(loginServicio.generarToken(usuario.getNombreUsuario(), usuario.getCorreoUsuario()), usuario.getUsuarioId());
-            url += "/restablecer/" + loginServicio.generarToken(usuario.getNombreUsuario(), usuario.getCorreoUsuario());
-            Correo structurecorreo = new Correo(usuario.getCorreoUsuario(), "Restablecer cuenta", url);
+            String modifiedUrl = url +  "/restablecer/" + loginServicio.generarToken(usuario.getNombreUsuario(), usuario.getCorreoUsuario());
+            Correo structurecorreo = new Correo(usuario.getCorreoUsuario(), "Restablecer cuenta", modifiedUrl);
             correoServicio.enviarEmail(structurecorreo);
 
             session.setAttribute("mensaje","Se envio un enlace al correo " + correo.toUpperCase() + " para el restablecimiento de su contraseña");
